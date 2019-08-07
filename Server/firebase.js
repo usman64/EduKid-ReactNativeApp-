@@ -1,15 +1,17 @@
 import firebase from 'firebase'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCZipQbKElC8kjrTXw0K-kEFo3n5RUeonI",
-    authDomain: "edukid-659ca.firebaseapp.com",
-    databaseURL: "https://edukid-659ca.firebaseio.com",
-    projectId: "edukid-659ca",
+    apiKey: /*apikey */'',
+    authDomain: /*authdomain */'',
+    databaseURL: /*dburl*/'',
+    projectId: /*projectid */'',
     storageBucket: "",
-    messagingSenderId: "484953035232",
-    appId: "1:484953035232:web:ad564bad23e5ba11"
+    messagingSenderId: /*msid */'',
+    appId: /*appid */''
   };
   // Initialize Firebase
   const Firebase=firebase.initializeApp(firebaseConfig);
   export default Firebase
 
+
+  /*Edit the firebase config with your config to setup the database */
