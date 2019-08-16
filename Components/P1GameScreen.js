@@ -4,6 +4,7 @@ import styles from './styles'
 import homo from '../Games/homo'
 import color from '../Games/colors'
 import capital from '../Games/capital'
+import math from '../Games/math'
 
 const Countdown = props => (
     <Text style={mystyle.countdown}>{props.count}</Text>
@@ -48,11 +49,10 @@ export default class P1GameScreen extends Component {
         if(thegame === 'homo') {
             this.setState({game: homo, gameTitle: 'Homophones', question: 'Are the two words Homophones?'})
             let random = Math.round(Math.random() * (homo.length-1))
-            console.log(random)
             let myquestion =  
                 <Text style={{fontSize: 30}}>
-                    <Text>Country: <Text style={{color: 'green'}}>{homo[random].word1}</Text>{`\n`}</Text>
-                    <Text>Capital: <Text style={{color: 'red'}}>{homo[random].word2} </Text></Text>
+                    <Text>Word1: <Text style={{color: 'green'}}>{homo[random].word1}</Text>{`\n`}</Text>
+                    <Text>Word2: <Text style={{color: 'red'}}>{homo[random].word2} </Text></Text>
                 </Text>
             let answer = homo[random].answer
             this.setState({currentQ: myquestion, currentA: answer})
@@ -62,7 +62,7 @@ export default class P1GameScreen extends Component {
             this.setState({game: math, gameTitle: 'Equations', question: 'Is the statement correct?'})
             let random = Math.round(Math.random() * (math.length-1))
             console.log(random)
-            let myquestion =  <Text style={{fontSize: 30, color: 'green'}}>math[random].question</Text>
+            let myquestion =  <Text style={{fontSize: 30, color: 'green'}}>{math[random].exp}</Text>
             let answer = math[random].answer
             this.setState({currentQ: myquestion, currentA: answer})
         }
@@ -82,11 +82,12 @@ export default class P1GameScreen extends Component {
 
         else if(thegame === 'color') {
             this.setState({game: color, gameTitle: 'Color Match', question: 'Does the word matches the color'})
-            let random = Math.round(Math.random() * (capital.length-1))
+            let random = Math.round(Math.random() * (color.length-1))
             console.log(random)
             let myquestion = 
-                <Text style={{fontSize: 30, color: color[random].color}}>{color[random].name}</Text>
-            let answer = capital[random].answer
+                <Text style={{fontSize: 30, color: color[random].color, fontWeight: 'bold'}}>{color[random].name}</Text>
+            let answer = color[random].answer
+            console.log(color[random].color)
             this.setState({currentQ: myquestion, currentA: answer})
         }
 
@@ -130,6 +131,7 @@ export default class P1GameScreen extends Component {
     }
 
     checkAnswer(decision, button) {
+        console.log(decision, this.state.currentA)
         if(this.state.currentA === decision) {
             this.setState(prevState => ({points: prevState.points + 1}))
             if(button === 'button1') {
@@ -161,8 +163,8 @@ export default class P1GameScreen extends Component {
             let random = Math.round(Math.random() * (homo.length-1))
             let myquestion = 
                 <Text style={{fontSize: 30}}>
-                    <Text>Country: <Text style={{color: 'green'}}>{homo[random].word1}</Text>{`\n`}</Text>
-                    <Text>Capital: <Text style={{color: 'red'}}>{capital[random].word2} </Text></Text>
+                    <Text>Word1: <Text style={{color: 'green'}}>{homo[random].word1}</Text>{`\n`}</Text>
+                    <Text>Word2: <Text style={{color: 'red'}}>{homo[random].word2} </Text></Text>
                 </Text>
             let answer = homo[random].answer
             this.setState({currentQ: myquestion, currentA: answer})
@@ -170,8 +172,7 @@ export default class P1GameScreen extends Component {
 
         else if(thegame === 'math') {
             let random = Math.round(Math.random() * (math.length-1))
-            <Text style={{fontSize: 30, color: 'green'}}>math[random].question</Text>
-            let myquestion = 
+            let myquestion =  <Text style={{fontSize: 30, color: 'green'}}>{math[random].exp}</Text>
             let answer = math[random].answer
             this.setState({currentQ: myquestion, currentA: answer})
         }
@@ -188,18 +189,19 @@ export default class P1GameScreen extends Component {
         }
 
         else if(thegame === 'color') {
-            let random = Math.round(Math.random() * (capital.length-1))
+            let random = Math.round(Math.random() * (color.length-1))
             console.log(random)
             let myquestion = 
-                <Text style={{fontSize: 30, color: color[random].color}}>{color[random].name}</Text>
-            let answer = capital[random].answer
+                <Text style={{fontSize: 30, color: color[random].color, fontWeight: 'bold'}}>{color[random].name}</Text>
+            let answer = color[random].answer
+            console.log(color[random].color)
             this.setState({currentQ: myquestion, currentA: answer})
         }
 
         let myuser = this.props.navigation.getParam('user')
         let myname = this.props.navigation.getParam('name')
         if(this.state.timeRemain <=0) {
-            this.props.navigation.navigate('Player1Score', {user: myuser, name: myname, points: this.state.points})
+            this.props.navigation.navigate('Player1Score', {user: myuser, name: myname, game: thegame, points: this.state.points})
         }
         
     }

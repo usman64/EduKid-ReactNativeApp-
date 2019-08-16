@@ -30,11 +30,12 @@ export default class HomeScreen extends Component {
     render() {
         let thename =  
             <Text style={styles.welcome}>
-                Hi <Text color: 'green'>{this.state.name}</Text>
+                Hi <Text style={{color: 'green'}}>{this.state.name}</Text>
             </Text>
         return (
             <View style = {styles.container}>
-                <View>thename</View>
+        
+                <View>{thename}</View>
                 <View style={{height:30}}/>
 
                 <TouchableOpacity onPress={()=> {

@@ -22,7 +22,13 @@ export default class LoginScreen extends Component {
 
         try {
             const user = await Login(email, password)
-            navigation.navigate('Home', {user: user})
+            if(user) {
+                navigation.navigate('Home', {user: user})
+            }
+
+            else {
+              Alert.alert('Invalid Login')  
+            }
         }
 
         catch(err) {

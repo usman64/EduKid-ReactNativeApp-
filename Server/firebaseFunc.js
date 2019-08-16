@@ -27,12 +27,18 @@ export const SignUp = async(email, password, name) => {
     }
 }
 
-export const StorePoints = (user, points, game) => {
-    var key = firebase.database().ref().child('users')
-    key.child(user).set({
-        'game': 'game',
-        'points' : 'points'
-    })
+export const StorePoints = async(user, points, game) => {
+    try {
+        let key = await firebase.database().ref().child('users')
+        key.child(user).set({
+            'game': 'game',
+            'points' : 'points'
+        })
+    }
+
+    catch(err) {
+        console.log(err)
+    }
     // var uidRef = key.child(user).push().key
     //Save the points to users/user.uid/game
 }
