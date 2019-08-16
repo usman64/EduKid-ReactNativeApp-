@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {Alert, Button, KeyboardAvoidingView , Text, View, TextInput, TouchableOpacity} from 'react-native';
 import styles from './styles'
 import Firebase from '../Server/firebase'
+import { Login } from '../Server/firebaseFunc'
 
 export default class LoginScreen extends Component {
 
@@ -14,17 +15,19 @@ export default class LoginScreen extends Component {
 
     }
 
-    loginUser = (navigation) => {
-        console.log(this.state.email)
-        console.log(this.state.password)
-       
-        Firebase.auth().signInWithEmailAndPassword(this.state.email,this.state.password)
-        .then((user)=> {
-            navigation.navigate('Home', {userid: user.user.uid})
-        })
-        .catch(err => {
+    loginUser = async() => {
+
+        const { navigation } = this.props 
+        const { email, password } = this.state
+
+        try {
+            const user = await Login(email, password)
+            navigation.navigate('Home', {user: user})
+        }
+
+        catch(err) {
             Alert.alert('Invalid Login')
-        })
+        }
     } 
    
     render() {
@@ -63,7 +66,7 @@ export default class LoginScreen extends Component {
                     </View>
                 </TouchableOpacity>
         
-                <TouchableOpacity onPress={()=> this.loginUser(this.props.navigation)}>
+                <TouchableOpacity onPress={()=> this.loginUser()}>
                     <View style={styles.button}>
                         <Text style={styles.buttonText}>LOG IN</Text>
                     </View>

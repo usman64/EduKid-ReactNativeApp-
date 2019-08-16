@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Button, KeyboardAvoidingView , Text, View, TextInput, TouchableOpacity} from 'react-native';
+import { Button, KeyboardAvoidingView , Text, View, TextInput, TouchableOpacity, Alert} from 'react-native';
 import { YellowBox } from 'react-native';
 import styles from './styles'
 import Firebase from '../Server/firebase'
+import { SignUp } from '../Server/firebaseFunc'
 
 export default class SignUpScreen extends Component {
 
@@ -17,24 +18,19 @@ export default class SignUpScreen extends Component {
         YellowBox.ignoreWarnings(['Setting a timer']);
     }
 
-    signupUser = async(navigation) => {
-        console.log(this.state.name)
-        console.log(this.state.email)
-        console.log(this.state.password)
-        try{
-            const response= await Firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password)
-            if(response) {
-                Firebase.database().ref('users/' + response.user.uid).set({
-                    email:this.state.email,
-                    name:this.state.name
-                })
-            }
+    signupUser = async() => {
 
+        const { navigation } = this.props
+        const { name, email, password } = this.state 
+
+        try{
+            await SignUp(email, password, name)
             navigation.navigate('Login')
         }
         
         catch(err) {
             console.log(err)
+            Alert.alert('Error Occurred! Please try again!')
         }
     }
 
@@ -66,7 +62,7 @@ export default class SignUpScreen extends Component {
                 </View>
         
                 <TouchableOpacity style={{paddingTop: 30}} 
-                    onPress={()=> this.signupUser(this.props.navigation)}    
+                    onPress={()=> this.signupUser()}    
                 >
                     <View style={styles.button}>
                         <Text style={styles.buttonText}>SIGN UP</Text>
