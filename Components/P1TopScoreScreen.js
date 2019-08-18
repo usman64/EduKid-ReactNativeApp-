@@ -11,12 +11,12 @@ export class P1TopScoreScreen extends Component {
     }
 
     pointsStoring = async() => {
-        let theuser = this.props.navigation.getParam('user')
+
         let points = this.props.navigation.getParam('points')
         let thegame = this.props.navigation.getParam('game')
 
         try {
-            await StorePoints(theuser,points,thegame)
+            await StorePoints(points,thegame)
         }
 
         catch(err) {
@@ -36,7 +36,7 @@ export class P1TopScoreScreen extends Component {
         let thename = this.props.navigation.getParam('name')
         let points = this.props.navigation.getParam('points')
         let text = 
-            <Text style={{fontSize: 30}}>
+            <Text style={{fontSize: 30, paddingTop: 50}}>
                 Hi <Text style={{color: 'pink'}}>{thename}</Text>, you got <Text style={{color: 'green'}}>{points}</Text> points!
             </Text>
 

@@ -27,13 +27,47 @@ export const SignUp = async(email, password, name) => {
     }
 }
 
-export const StorePoints = async(user, points, game) => {
+export const ChangePass = async(password) => {
     try {
-        let key = await firebase.database().ref().child('users')
-        key.child(user).set({
-            'game': 'game',
-            'points' : 'points'
-        })
+        await Firebase.auth().currentUser.updatePassword(password)
+    }
+
+    catch(err) {
+        console.log(err)
+    }
+}
+
+export const Logout = async() => {
+    try {
+        await Firebase.auth().signOut()
+    }
+    
+    catch(err) {
+        console.log(err)
+    }
+    
+}
+
+export const ForgotPassword = async(email) => {
+    try {
+        await Firebase.auth().sendPasswordResetEmail(email)
+        return 1
+    }
+
+    catch(err) {
+        console.log(err)
+        return 0
+    }
+}
+
+export const StorePoints = async(points, game) => {
+    try {
+        const user= await Firebase.auth().currentUser()
+        if(user) {
+            Firebase.database().ref('users/' + user.uid).set({
+                
+            })
+        }
     }
 
     catch(err) {

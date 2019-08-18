@@ -25,7 +25,7 @@ export default class SignUpScreen extends Component {
 
         try{
             await SignUp(email, password, name)
-            navigation.navigate('Login')
+            navigation.navigate('Login', {signup: true})
         }
         
         catch(err) {

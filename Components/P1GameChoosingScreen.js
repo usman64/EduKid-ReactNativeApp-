@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Button , Text, View, TextInput, TouchableOpacity} from 'react-native';
+import { StyleSheet, Button , Text, View, TextInput, TouchableOpacity, Image} from 'react-native';
 import styles from './styles'
 
 export class P1GameChoosingScreen extends Component {
@@ -17,30 +17,36 @@ export class P1GameChoosingScreen extends Component {
                 <View style={{height:30}}/>
 
                 <TouchableOpacity onPress={()=> this.goToGame('capital')}>
-                    <View style={styles.button}>
+                    <View style={[styles.button, {flexDirection: 'row'}]}>
                         <Text style={styles.buttonText}>COUNTRY CITY</Text>
                     </View>
                 </TouchableOpacity>
+
                 <TouchableOpacity onPress={()=> this.goToGame('homo')}>
-                    <View style={styles.button}>
+                    <View style={[styles.button, {flexDirection: 'row'}]}>
                         <Text style={styles.buttonText}>HOMOPHONES</Text>
                     </View>
                 </TouchableOpacity>
+
                 <TouchableOpacity onPress={()=> this.goToGame('math')}>
-                    <View style={styles.button}>
+                    <View style={[styles.button, {flexDirection: 'row'}]}>
                         <Text style={styles.buttonText}>GREATER LESSER</Text>
                     </View>
                 </TouchableOpacity>
+
                 <TouchableOpacity onPress={()=> this.goToGame('color')}>
-                    <View style={styles.button}>
+                    <View style={[styles.button, {flexDirection: 'row'}]}>
                         <Text style={styles.buttonText}>COLOR MATCH</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=> this.goToGame('game5')}>
-                    <View style={styles.button}>
-                        <Text style={styles.buttonText}>GAME 5</Text>
-                    </View>
-                </TouchableOpacity>
+               
+                <View style={{paddingTop: 30, paddingRight: 170}}>
+                    <Text style={{fontSize: 15, color: 'grey', textAlign: 'left'}}>
+                        <Text style={{textDecorationLine: 'underline'}}>Rules: {'\n'}</Text>
+                        <Text>Correct Answer: <Text style={{color: 'green'}}>1</Text>{'\n'}</Text>
+                        <Text>Wrong Answer: <Text style={{color: 'red'}}>-1</Text></Text>
+                    </Text>    
+                </View>
 
 
             </View>

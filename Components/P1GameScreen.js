@@ -146,6 +146,7 @@ export default class P1GameScreen extends Component {
         }
 
         else {
+            this.setState(prevState => ({points: prevState.points - 1}))
             if(button === 'button1') {
                 this.setState({thecolor1: 'red'})
                 setTimeout(()=> this.setState({thecolor1: 'grey'}), 200)

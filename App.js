@@ -8,6 +8,7 @@ import StartScreen from './Components/StartScreen'
 import P1GameChoosingScreen from './Components/P1GameChoosingScreen'
 import P1GameScreen from './Components/P1GameScreen';
 import P1TopScoreScreen from './Components/P1TopScoreScreen';
+import ChangePasswordScreen from './Components/ChangePasswordScreen'
 
 const MainNav = createStackNavigator({
   Start: {
@@ -37,6 +38,10 @@ const MainNav = createStackNavigator({
       title: 'Home',
       headerLeft: (<View></View>)
     }
+  },
+
+  ChangePass : {
+    screen: ChangePasswordScreen,
   },
 
   Player1: {
