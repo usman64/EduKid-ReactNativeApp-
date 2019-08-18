@@ -5,6 +5,10 @@ import LoginScreen from './Components/LoginScreen'
 import SignUpScreen from './Components/SignUpScreen'
 import HomeScreen from './Components/HomeScreen'
 import StartScreen from './Components/StartScreen'
+import P1GameChoosingScreen from './Components/P1GameChoosingScreen'
+import P1GameScreen from './Components/P1GameScreen';
+import P1TopScoreScreen from './Components/P1TopScoreScreen';
+import ChangePasswordScreen from './Components/ChangePasswordScreen'
 
 const MainNav = createStackNavigator({
   Start: {
@@ -32,8 +36,34 @@ const MainNav = createStackNavigator({
     screen: HomeScreen,
     navigationOptions : {
       title: 'Home',
+      headerLeft: (<View></View>)
     }
+  },
+
+  ChangePass : {
+    screen: ChangePasswordScreen,
+  },
+
+  Player1: {
+    screen: P1GameChoosingScreen
+  },
+
+  Player1Game: {
+    screen: P1GameScreen,
+    navigationOptions : {
+      headerLeft: (<View></View>)
+    }
+  },
+
+  Player1Score: {
+    screen: P1TopScoreScreen,
+    navigationOptions : {
+      headerLeft: (<View></View>)
+    }
+
   }
+
+
 },
 {
   initialRouteName: 'Start'

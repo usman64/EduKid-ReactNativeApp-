@@ -106,9 +106,11 @@ const styles = StyleSheet.create({
       createAccount: {
         height:30,
       },
+
       normalContainer: {
         height:20,
       },
+
       normalText: {
         color:'#5B5A5A',
         fontSize:12,
@@ -116,6 +118,7 @@ const styles = StyleSheet.create({
         textAlign:'center',
         width:330,
       },
+      
       createText: {
         color:'#FF7260',
         fontSize:12,
