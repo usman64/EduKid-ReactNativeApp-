@@ -6,7 +6,7 @@ import styles from './styles'
 
 const win = 'lawngreen'
 const loss = 'red'
-const defaultColor = 'rgb(211,211,211,0.5)'
+const defaultColor = 'rgb(211,211,211)'
 
 
 const PlayerButton = (props) => (
