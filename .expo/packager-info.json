@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 21965,
-  "expoServerNgrokUrl": "https://k7-fuw.anonymous.edukid.exp.direct",
-  "packagerNgrokUrl": "https://packager.k7-fuw.anonymous.edukid.exp.direct",
-  "ngrokPid": 22000
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }
