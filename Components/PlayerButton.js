@@ -1,5 +1,6 @@
 import React from 'react';
-import {View,TouchableHighlight} from 'react-native';
+import {View,Text,TouchableHighlight,StyleSheet} from 'react-native';
+import { AuthSession } from 'expo';
 
 
 const PlayerButton = (props) => (
@@ -8,8 +9,22 @@ const PlayerButton = (props) => (
         underlayColor={props.feedbackColor}
         style={{flex:1,backgroundColor:props.feedbackColor}}
     >
-      <View>{props.playerId}</View>
+        <Text style={mystyles.playerId}>{props.playerId}</Text>
     </TouchableHighlight>
 )
 
 export default PlayerButton
+
+
+mystyles = StyleSheet.create({
+    
+    playerId: {
+            color:'white',
+            fontWeight:'bold',
+            fontSize:30,
+            marginTop: 'auto',
+            marginLeft: 'auto',
+            marginRight: 'auto'
+
+        }
+})

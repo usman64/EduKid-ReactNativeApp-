@@ -15,7 +15,7 @@ const defaultColor = 'rgb(211,211,211)'
 
 
 const Questions = props => (
-    <View style={{flex:1, paddingTop: 200, paddingLeft:100}}>
+    <View style={{flex:1,justifyContent:'center', marginLeft:'auto', marginRight:'auto'}}>
         <Text>{props.question}</Text>
     </View>
 )
@@ -132,26 +132,32 @@ export default class MultiplayerGameScreen extends Component {
     }
 
     render(){
-        if(this.state.showCountDown) {
-            return <CountDown count={this.state.count} />
-        }
+        // if(this.state.showCountDown) {
+        //     return <CountDown count={this.state.count} />
+        // }
 
         return(
             <View style={mystyles.container}>
                 {/* <StatusBar hidden={true} /> */}
-                <PlayerButton 
-                feedbackColor={this.state.player1_status} 
-                myPress={this.myPress1}
-                playerId={"Player 1"}
-                />
 
-                <Questions question={this.state.currentQ}/>
+                <View style={{flex:1, transform: [{ rotate: '180deg', }]}} >
+                    <Questions question={this.state.currentQ}/>
+                    <PlayerButton 
+                    feedbackColor={this.state.player1_status} 
+                    myPress={this.myPress1}
+                    playerId={"Player 1"}
+                    />
+                </View>
 
-                <PlayerButton 
-                feedbackColor={this.state.player2_status} 
-                myPress={this.myPress2} 
-                playerId={"Player 2"}
-                />
+                <View style={{flex:1}}>
+                    <Questions question={this.state.currentQ}/>
+                    <PlayerButton 
+                    feedbackColor={this.state.player2_status} 
+                    myPress={this.myPress2} 
+                    playerId={"Player 2"}
+                    />
+                </View>
+
             </View>
         )
     }
@@ -172,6 +178,10 @@ const mystyles = StyleSheet.create({
     textStyle: {
         fontSize: 20,
         color: 'green'
+    },
+
+    PlayerBlock: {
+        flex: 1
     }
   });
   
