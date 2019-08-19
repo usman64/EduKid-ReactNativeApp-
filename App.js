@@ -71,7 +71,7 @@ const MainNav = createStackNavigator({
 
 },
 {
-  initialRouteName: 'Start'
+  initialRouteName: 'Player2Game'
 })
 
 const AppContainer = createAppContainer(MainNav)

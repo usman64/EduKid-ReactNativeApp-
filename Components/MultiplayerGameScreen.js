@@ -6,6 +6,7 @@ import capital from '../Games/capital'
 import color from '../Games/colors'
 import homo from '../Games/homo'
 import math from '../Games/math'
+import PlayerButton from './PlayerButton'
 
 
 const win = 'lawngreen'
@@ -13,22 +14,11 @@ const loss = 'red'
 const defaultColor = 'rgb(211,211,211)'
 
 
-const PlayerButton = (props) => (
-    <TouchableHighlight 
-        onPressIn={props.myPress}
-        underlayColor={props.player}
-        style={{flex:1,backgroundColor:props.player}}
-    >
-      <View></View>
-    </TouchableHighlight>
-)
-
 const Questions = props => (
-    <View style={{flex:2, paddingTop: 200, paddingLeft:100}}>
+    <View style={{flex:1, paddingTop: 200, paddingLeft:100}}>
         <Text>{props.question}</Text>
     </View>
 )
-  
   
 
 export default class MultiplayerGameScreen extends Component {
@@ -109,9 +99,9 @@ export default class MultiplayerGameScreen extends Component {
         this.interval=setInterval(()=> this.decrementCount(),1000)
     }
 
-    componentWillUnmount(){
-        clearInterval(this.interval)
-    }
+    // componentWillUnmount(){
+    //     clearInterval(this.interval)
+    // }
 
 
     myPress1 = () => {
@@ -124,11 +114,11 @@ export default class MultiplayerGameScreen extends Component {
     }
 
     myPress2 = () => {
-    if(this.state.player1_status === defaultColor && this.state.player2_status === defaultColor)
-    {
-        this.setState({player2_status: loss}, () => setTimeout(() => this.setState({player2_status:defaultColor}), 1000))
-        // Alert.alert('Player2_status')
-    }
+        if(this.state.player1_status === defaultColor && this.state.player2_status === defaultColor)
+        {
+            this.setState({player2_status: loss}, () => setTimeout(() => this.setState({player2_status:defaultColor}), 1000))
+            // Alert.alert('Player2_status')
+        }
     
     }
 
@@ -136,7 +126,8 @@ export default class MultiplayerGameScreen extends Component {
     decrementCount=()=> {
         this.setState(prevState => ({count: prevState.count - 1}))
         if(this.state.count < 1) {
-            this.setState({count: null, showCountDown: false, showRest: true})
+            this.setState({count: null, showCountDown: false, showRest: true}, () =>  clearInterval(this.interval))
+
         }
     }
 
@@ -148,9 +139,19 @@ export default class MultiplayerGameScreen extends Component {
         return(
             <View style={mystyles.container}>
                 {/* <StatusBar hidden={true} /> */}
-                <PlayerButton player={this.state.player1_status} myPress={this.myPress1}/>
+                <PlayerButton 
+                feedbackColor={this.state.player1_status} 
+                myPress={this.myPress1}
+                playerId={"Player 1"}
+                />
+
                 <Questions question={this.state.currentQ}/>
-                <PlayerButton player={this.state.player2_status} myPress={this.myPress2} />
+
+                <PlayerButton 
+                feedbackColor={this.state.player2_status} 
+                myPress={this.myPress2} 
+                playerId={"Player 2"}
+                />
             </View>
         )
     }
