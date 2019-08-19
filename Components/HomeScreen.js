@@ -96,7 +96,7 @@ export default class HomeScreen extends Component {
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={()=>{
-
+                    this.props.navigation.navigate('Player2Game', {user: this.props.navigation.getParam('user'), name: this.state.name})
                 }}>
                     <View style={styles.button}>
                         <Text style={styles.buttonText}>PLAYER 2</Text>

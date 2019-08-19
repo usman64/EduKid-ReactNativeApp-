@@ -9,6 +9,7 @@ import P1GameChoosingScreen from './Components/P1GameChoosingScreen'
 import P1GameScreen from './Components/P1GameScreen';
 import P1TopScoreScreen from './Components/P1TopScoreScreen';
 import ChangePasswordScreen from './Components/ChangePasswordScreen'
+import MultiplayerGameScreen from './Components/MultiplayerGameScreen'
 
 const MainNav = createStackNavigator({
   Start: {
@@ -61,7 +62,11 @@ const MainNav = createStackNavigator({
       headerLeft: (<View></View>)
     }
 
-  }
+  },
+
+  Player2Game: {
+    screen: MultiplayerGameScreen,
+  },
 
 
 },
