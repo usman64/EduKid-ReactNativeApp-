@@ -25,25 +25,30 @@ export default class SignUpScreen extends Component {
 
         if(name.length <= 0) {
             Alert.alert('Error: Please enter your name for God sake')
+            return;
+        }
+
+        else {
+            try{
+
+                const err = await SignUp(email, password, name)
+                if(err) {
+                    console.log(err)
+                    Alert.alert(`Error: ${JSON.stringify(err.message)}`)
+                }
+                else {
+                    navigation.navigate('Login', {signup: true})
+                }
+            }
+            
+            catch(err) {
+                console.log(err)
+                let errorMessage = err.Error
+                Alert.alert(errorMessage)
+            }
+
         } 
 
-        try{
-
-            const err = await SignUp(email, password, name)
-            if(err) {
-                console.log(err)
-                Alert.alert(`Error: ${JSON.stringify(err.message)}`)
-            }
-            else {
-                navigation.navigate('Login', {signup: true})
-            }
-        }
-        
-        catch(err) {
-            console.log(err)
-            let errorMessage = err.Error
-            Alert.alert(errorMessage)
-        }
     }
 
     render() {
