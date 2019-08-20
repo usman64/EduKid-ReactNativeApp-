@@ -48,6 +48,40 @@ const PassChange = props => {
 
 export default class HomeScreen extends Component {
 
+    // static navigationOptions = ({navigation}) => ({
+    //     headerTitle: "Home",
+    //     // headerLeft: (<TouchableOpacity 
+    //     //     // style={{paddingRight: 80}} 
+    //     //     onPress={()=>{
+    //     //     navigation.navigate('ChangePass')
+    //     // }}>
+    //     //     <View 
+    //     //     // style={[styles.button, {width: 100}]}
+    //     //     >
+    //     //         <Text 
+    //     //         // style={[styles.buttonText, {textAlign: 'center'}]}
+    //     //         >CHANGE PASSWORD</Text>
+    //     //     </View>
+    //     // </TouchableOpacity>),
+    //     headerRight: (
+    //         <TouchableOpacity 
+    //         // style={{paddingLeft: 80}} 
+    //         onPress={()=>{
+    //             Logout().then(()=> {
+    //                 navigation.navigate('Login', {logout: true});
+    //             })       
+    //         }}>
+    //             <View 
+    //             // style={[styles.button, {width: 100}]}
+    //             >
+    //                 <Text 
+    //                 // style={styles.buttonText}
+    //                 >LOGOUT</Text>
+    //             </View>
+    //         </TouchableOpacity>
+    //     )
+    // })
+
     constructor(props) {
         super(props)
         this.state={

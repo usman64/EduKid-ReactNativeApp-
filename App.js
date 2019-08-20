@@ -68,10 +68,10 @@ const MainNav = createStackNavigator({
     screen: MultiplayerGameScreen,
   },
 
-
 },
 {
-  initialRouteName: 'Player2Game'
+  // initialRouteName: 'Player2Game'
+  initialRouteName: 'Start'
 })
 
 const AppContainer = createAppContainer(MainNav)

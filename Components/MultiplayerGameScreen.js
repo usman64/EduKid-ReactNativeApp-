@@ -1,25 +1,22 @@
 import React, {Component} from 'react';
-import {View,Text,StyleSheet, TouchableHighlight, Alert,StatusBar } from 'react-native';
+import {View,Text,StyleSheet,StatusBar,Vibration } from 'react-native';
 import {CountDown} from './CountDown'
-import styles from './styles'
 import capital from '../Games/capital'
 import color from '../Games/colors'
 import homo from '../Games/homo'
 import math from '../Games/math'
 import PlayerButton from './PlayerButton'
+import Question from './Question'
 
 
-const win = 'lawngreen'
-const loss = 'red'
-const defaultColor = 'rgb(211,211,211)'
+export const win = 'lawngreen'
+export const loss = 'red'
+export const defaultColor = 'grey'
+
+let P1_hitTime = 0
+let P2_hitTime = 0
 
 
-const Questions = props => (
-    <View style={{flex:1,justifyContent:'center', marginLeft:'auto', marginRight:'auto'}}>
-        <Text>{props.question}</Text>
-    </View>
-)
-  
 
 export default class MultiplayerGameScreen extends Component {
 
@@ -39,7 +36,50 @@ export default class MultiplayerGameScreen extends Component {
             question: '',
             currentQ:'',
             currentA: '',
+            P1_score: 0,
+            P2_score: 0,
+            gameDuration: 20000, //60 secs
         }
+    }
+
+    gameEndResult = () => {
+        clearInterval(this.gameinterval)
+        let result = ''
+        let winner = ''
+        if(this.state.P1_score === this.state.P2_score)
+        {
+            result= "Tie"
+        }
+        else{
+            let {P1_score, P2_score} = this.state
+            result = P1_score > P2_score ? "Player 1 wins!" : "Player 2 wins!"
+            winner = P1_score > P2_score ? "Player 1" : "Player 2"
+        }
+
+        const resultDisplay = <Text style={{fontSize: 30, color: 'black'}}>{result}</Text>
+
+        this.setState({currentQ:resultDisplay})
+        if(winner === "Player 1")
+        {
+            this.resultInterval = setInterval(()=>
+            this.setState({player1_status: win}, () => setTimeout(() => this.setState({player1_status:defaultColor}),500))
+            ,1000)
+        }
+        else if(winner === "Player 2")
+        {
+            this.resultInterval = setInterval(()=>
+            this.setState({player2_status: win}, () => setTimeout(() => this.setState({player2_status:defaultColor}),500))
+            ,1000)
+        }
+
+    }
+
+
+    getCurrentTime = () => new Date().getTime()
+
+    resetTimes = () => {
+        P1_hitTime = 0
+        P2_hitTime = 0
     }
 
     gameSelection = () => {
@@ -95,53 +135,104 @@ export default class MultiplayerGameScreen extends Component {
     }
 
     componentDidMount(){
-        this.gameSelection();
         this.interval=setInterval(()=> this.decrementCount(),1000)
+        this.gameinterval=setInterval(()=> {
+            this.gameSelection()
+            this.resetTimes()
+        }
+        ,4000)
+
+        this.gameTime = setTimeout(() => this.gameEndResult(), this.state.gameDuration)
     }
 
-    // componentWillUnmount(){
-    //     clearInterval(this.interval)
+    componentWillUnmount(){
+        clearInterval(this.gameinterval)
+        clearInterval(this.resultInterval)
+    }
+
+
+    // myPress1 = () => {
+    //     if(this.state.player2_status === defaultColor && this.state.player1_status === defaultColor)
+    //     {
+    //         this.setState({player1_status: win}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:this.incrementScore(prevState.P1_score)})), 1000))
+    //         Vibration.vibrate(100)
+    //     }
+        
     // }
 
+    // myPress2 = () => {
+    //     if(this.state.player1_status === defaultColor && this.state.player2_status === defaultColor)
+    //     {
+    //         this.setState({player2_status: win}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.incrementScore(prevState.P2_score)})), 1000))
+    //         Vibration.vibrate(100)
+    //     }
+    
+    // }
 
     myPress1 = () => {
-        if(this.state.player2_status === defaultColor && this.state.player1_status === defaultColor)
+        P1_hitTime = this.getCurrentTime()
+        let copyP2_hitTime = P2_hitTime
+        if(P1_hitTime < copyP2_hitTime && copyP2_hitTime || P1_hitTime > copyP2_hitTime && !copyP2_hitTime)
         {
-        this.setState({player1_status: win}, () => setTimeout(() => this.setState({player1_status:defaultColor}), 1000))
-        // Alert.alert('Player1_status') 
+            if(this.state.currentA)
+            {
+                this.setState({player1_status: win}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:this.incrementScore(prevState.P1_score)})), 1000))
+            }
+            else
+            {
+                this.setState({player1_status: loss}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:this.decrementScore(prevState.P1_score)})), 1000))
+            }
         }
-        
+        // else{
+        //     this.setState({player1_status: loss}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:prevState.P1_score + 10})), 1000))
+        // }
+        Vibration.vibrate(50)
     }
 
     myPress2 = () => {
-        if(this.state.player1_status === defaultColor && this.state.player2_status === defaultColor)
+        P2_hitTime = this.getCurrentTime()
+        let copyP1_hitTime = P1_hitTime
+        if(P2_hitTime < copyP1_hitTime && copyP1_hitTime || P2_hitTime > copyP1_hitTime && !copyP1_hitTime)
         {
-            this.setState({player2_status: loss}, () => setTimeout(() => this.setState({player2_status:defaultColor}), 1000))
-            // Alert.alert('Player2_status')
+            if(this.state.currentA)
+            {
+                this.setState({player2_status: win}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.incrementScore(prevState.P2_score)})), 1000))
+            }
+            else
+            {
+                this.setState({player2_status: loss}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.decrementScore(prevState.P2_score)})), 1000))
+            }
         }
-    
+        // else{
+        //     this.setState({player2_status: win}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:prevState.P2_score + 10})), 1000))
+        // }
+        Vibration.vibrate(50)
     }
 
 
     decrementCount=()=> {
         this.setState(prevState => ({count: prevState.count - 1}))
         if(this.state.count < 1) {
-            this.setState({count: null, showCountDown: false, showRest: true}, () =>  clearInterval(this.interval))
-
+            this.setState({count: null, showCountDown: false,}, () =>  clearInterval(this.interval))
         }
     }
 
+    incrementScore = (prevState_score) => prevState_score + 1
+
+    decrementScore = (prevState_score) => prevState_score - 1
+
     render(){
-        // if(this.state.showCountDown) {
-        //     return <CountDown count={this.state.count} />
-        // }
+        if(this.state.showCountDown) {
+            return <CountDown count={this.state.count} />
+        }
 
         return(
             <View style={mystyles.container}>
-                {/* <StatusBar hidden={true} /> */}
+                <StatusBar hidden={true} />
 
                 <View style={{flex:1, transform: [{ rotate: '180deg', }]}} >
-                    <Questions question={this.state.currentQ}/>
+                    <Question question={this.state.currentQ}/>
+                    <Text style={[mystyles.score, {marginLeft:'auto'}]}>{this.state.P1_score}</Text>
                     <PlayerButton 
                     feedbackColor={this.state.player1_status} 
                     myPress={this.myPress1}
@@ -150,7 +241,8 @@ export default class MultiplayerGameScreen extends Component {
                 </View>
 
                 <View style={{flex:1}}>
-                    <Questions question={this.state.currentQ}/>
+                    <Question question={this.state.currentQ}/>
+                    <Text style={mystyles.score}>{this.state.P2_score}</Text>
                     <PlayerButton 
                     feedbackColor={this.state.player2_status} 
                     myPress={this.myPress2} 
@@ -166,9 +258,9 @@ export default class MultiplayerGameScreen extends Component {
 const mystyles = StyleSheet.create({
     container: {
       flex: 1,
-      // paddingTop: Constants.statusBarHeight,
-      backgroundColor: '#ecf0f1',
       padding: 0,
+    //   backgroundColor: 'rgb(211,211,211)'
+      backgroundColor: 'white'
     },
     button: {
       flex:1,
@@ -180,8 +272,12 @@ const mystyles = StyleSheet.create({
         color: 'green'
     },
 
-    PlayerBlock: {
-        flex: 1
+    score: {
+      fontSize: 40,
+      fontWeight: 'bold',
+      color: defaultColor,
+      padding: 5,
+      paddingTop: 0
     }
   });
   
