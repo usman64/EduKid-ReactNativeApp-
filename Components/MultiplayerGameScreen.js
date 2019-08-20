@@ -38,17 +38,19 @@ export default class MultiplayerGameScreen extends Component {
             currentA: '',
             P1_score: 0,
             P2_score: 0,
-            gameDuration: 20000, //60 secs
+            gameDuration: 60000, //60 secs
+            gameEnded: false
         }
     }
 
     gameEndResult = () => {
+        this.setState({gameEnded:true})
         clearInterval(this.gameinterval)
         let result = ''
         let winner = ''
         if(this.state.P1_score === this.state.P2_score)
         {
-            result= "Tie"
+            result= "Tie!"
         }
         else{
             let {P1_score, P2_score} = this.state
@@ -58,7 +60,6 @@ export default class MultiplayerGameScreen extends Component {
 
         const resultDisplay = <Text style={{fontSize: 30, color: 'black'}}>{result}</Text>
 
-        this.setState({currentQ:resultDisplay})
         if(winner === "Player 1")
         {
             this.resultInterval = setInterval(()=>
@@ -71,6 +72,12 @@ export default class MultiplayerGameScreen extends Component {
             this.setState({player2_status: win}, () => setTimeout(() => this.setState({player2_status:defaultColor}),500))
             ,1000)
         }
+        else{
+            this.resultInterval = setInterval(()=>
+            this.setState({player2_status: win,player1_status:win}, () => setTimeout(() => this.setState({player2_status:defaultColor,player1_status:defaultColor}),500))
+            ,1000)
+        }
+        this.setState({currentQ:resultDisplay})
 
     }
 
@@ -140,7 +147,7 @@ export default class MultiplayerGameScreen extends Component {
             this.gameSelection()
             this.resetTimes()
         }
-        ,4000)
+        ,3000)
 
         this.gameTime = setTimeout(() => this.gameEndResult(), this.state.gameDuration)
     }
@@ -170,43 +177,49 @@ export default class MultiplayerGameScreen extends Component {
     // }
 
     myPress1 = () => {
-        P1_hitTime = this.getCurrentTime()
-        let copyP2_hitTime = P2_hitTime
-        if(P1_hitTime < copyP2_hitTime && copyP2_hitTime || P1_hitTime > copyP2_hitTime && !copyP2_hitTime)
+        if(!this.state.gameEnded)
         {
-            if(this.state.currentA)
+            P1_hitTime = this.getCurrentTime()
+            let copyP2_hitTime = P2_hitTime
+            if(P1_hitTime < copyP2_hitTime && copyP2_hitTime || P1_hitTime > copyP2_hitTime && !copyP2_hitTime)
             {
-                this.setState({player1_status: win}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:this.incrementScore(prevState.P1_score)})), 1000))
+                if(this.state.currentA)
+                {
+                    this.setState({player1_status: win}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:this.incrementScore(prevState.P1_score)})), 1000))
+                }
+                else
+                {
+                    this.setState({player1_status: loss}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:this.decrementScore(prevState.P1_score)})), 1000))
+                }
             }
-            else
-            {
-                this.setState({player1_status: loss}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:this.decrementScore(prevState.P1_score)})), 1000))
-            }
+            // else{
+            //     this.setState({player1_status: loss}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:prevState.P1_score + 10})), 1000))
+            // }
+            Vibration.vibrate(50)
         }
-        // else{
-        //     this.setState({player1_status: loss}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:prevState.P1_score + 10})), 1000))
-        // }
-        Vibration.vibrate(50)
-    }
+}
 
     myPress2 = () => {
-        P2_hitTime = this.getCurrentTime()
-        let copyP1_hitTime = P1_hitTime
-        if(P2_hitTime < copyP1_hitTime && copyP1_hitTime || P2_hitTime > copyP1_hitTime && !copyP1_hitTime)
+        if(!this.state.gameEnded)
         {
-            if(this.state.currentA)
+            P2_hitTime = this.getCurrentTime()
+            let copyP1_hitTime = P1_hitTime
+            if(P2_hitTime < copyP1_hitTime && copyP1_hitTime || P2_hitTime > copyP1_hitTime && !copyP1_hitTime)
             {
-                this.setState({player2_status: win}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.incrementScore(prevState.P2_score)})), 1000))
+                if(this.state.currentA)
+                {
+                    this.setState({player2_status: win}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.incrementScore(prevState.P2_score)})), 1000))
+                }
+                else
+                {
+                    this.setState({player2_status: loss}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.decrementScore(prevState.P2_score)})), 1000))
+                }
             }
-            else
-            {
-                this.setState({player2_status: loss}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.decrementScore(prevState.P2_score)})), 1000))
-            }
+            // else{
+            //     this.setState({player2_status: win}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:prevState.P2_score + 10})), 1000))
+            // }
+            Vibration.vibrate(50)
         }
-        // else{
-        //     this.setState({player2_status: win}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:prevState.P2_score + 10})), 1000))
-        // }
-        Vibration.vibrate(50)
     }
 
 
