@@ -21,16 +21,28 @@ export default class SignUpScreen extends Component {
     signupUser = async() => {
 
         const { navigation } = this.props
-        const { name, email, password } = this.state 
+        const { name, email, password } = this.state
+
+        if(name.length <= 0) {
+            Alert.alert('Error: Please enter your name for God sake')
+        } 
 
         try{
-            await SignUp(email, password, name)
-            navigation.navigate('Login', {signup: true})
+
+            const err = await SignUp(email, password, name)
+            if(err) {
+                console.log(err)
+                Alert.alert(`Error: ${JSON.stringify(err.message)}`)
+            }
+            else {
+                navigation.navigate('Login', {signup: true})
+            }
         }
         
         catch(err) {
             console.log(err)
-            Alert.alert('Error Occurred! Please try again!')
+            let errorMessage = err.Error
+            Alert.alert(errorMessage)
         }
     }
 

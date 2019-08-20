@@ -3,25 +3,16 @@ import { StyleSheet, Button , Text, View, TextInput, TouchableOpacity,Alert, Ima
 import styles from './styles'
 import Firebase from '../Server/firebase'  
 import { YellowBox } from 'react-native'; 
-import { Logout, DisplayName } from '../Server/firebaseFunc'
+import { DisplayName } from '../Server/firebaseFunc'
 
-const TwoMainButtons= props => (
+const SettingButton= props => (
     <View style={{flexDirection: 'row'}}>
-        <TouchableOpacity style={{paddingRight: 80}} onPress={()=>{
-            props.nav.navigate('ChangePass')
-        }}>
-            <View style={[styles.button, {width: 100}]}>
-                <Text style={[styles.buttonText, {textAlign: 'center'}]}>CHANGE PASSWORD</Text>
-            </View>
-        </TouchableOpacity>
 
-        <TouchableOpacity style={{paddingLeft: 80}} onPress={()=>{
-            Logout().then(()=> {
-                props.nav.navigate('Login', {logout: true});
-            })       
+        <TouchableOpacity style={{paddingLeft: 180}} onPress={()=>{
+            props.nav.navigate('Setting');     
         }}>
-            <View style={[styles.button, {width: 100}]}>
-                <Text style={styles.buttonText}>LOGOUT</Text>
+            <View style={[styles.button, {width: 120}]}>
+                <Text style={styles.buttonText}>SETTINGS</Text>
             </View>
         </TouchableOpacity>
 
@@ -31,8 +22,16 @@ const TwoMainButtons= props => (
 const PassChange = props => {
     if(props.success) {
         return (
-            <View style= {{paddingBottom: 30}}>
+            <View style= {{paddingBottom: 10}}>
                 <Text style={{color: 'green'}}>Password Changed Successfully</Text> 
+            </View>
+        )
+    }
+
+    else if(props.duration) {
+        return (
+            <View style= {{paddingBottom: 10}}>
+                <Text style={{color: 'green'}}>Game Duration Changed Successfully</Text> 
             </View>
         )
     }
@@ -47,40 +46,6 @@ const PassChange = props => {
 
 
 export default class HomeScreen extends Component {
-
-    // static navigationOptions = ({navigation}) => ({
-    //     headerTitle: "Home",
-    //     // headerLeft: (<TouchableOpacity 
-    //     //     // style={{paddingRight: 80}} 
-    //     //     onPress={()=>{
-    //     //     navigation.navigate('ChangePass')
-    //     // }}>
-    //     //     <View 
-    //     //     // style={[styles.button, {width: 100}]}
-    //     //     >
-    //     //         <Text 
-    //     //         // style={[styles.buttonText, {textAlign: 'center'}]}
-    //     //         >CHANGE PASSWORD</Text>
-    //     //     </View>
-    //     // </TouchableOpacity>),
-    //     headerRight: (
-    //         <TouchableOpacity 
-    //         // style={{paddingLeft: 80}} 
-    //         onPress={()=>{
-    //             Logout().then(()=> {
-    //                 navigation.navigate('Login', {logout: true});
-    //             })       
-    //         }}>
-    //             <View 
-    //             // style={[styles.button, {width: 100}]}
-    //             >
-    //                 <Text 
-    //                 // style={styles.buttonText}
-    //                 >LOGOUT</Text>
-    //             </View>
-    //         </TouchableOpacity>
-    //     )
-    // })
 
     constructor(props) {
         super(props)
@@ -110,19 +75,22 @@ export default class HomeScreen extends Component {
             </Text>
         return (
             <View style = {[mystyles.thecontainer,{paddingTop: 0}]}>
-                <TwoMainButtons nav = {this.props.navigation}/>
+                <SettingButton nav = {this.props.navigation}/>
 
                 <Image 
-                    style={{height: 200, width: 200}}
+                    style={{height: 180, width: 180}}
                     source={require('../assets/images.png')}
                 />
                 
-                <PassChange success = {this.props.navigation.getParam('success')}/>
+                <PassChange success = {this.props.navigation.getParam('success')}
+                            duration = {this.props.navigation.getParam('dura')}/>
                 <View>{thename}</View>
-                <View style={{height:30}}/>
+                <View style={{height:20}}/>
 
                 <TouchableOpacity onPress={()=> {
-                        this.props.navigation.navigate('Player1', {user: this.props.navigation.getParam('user'), name: this.state.name})
+                        this.props.navigation.navigate('Player1', {user: this.props.navigation.getParam('user'), 
+                                                                   name: this.state.name,
+                                                                   time: this.props.navigation.getParam('time')})
                     }}>
                     <View style={styles.button}>
                         <Text style={styles.buttonText}>Single Player</Text>

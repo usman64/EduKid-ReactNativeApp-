@@ -23,7 +23,7 @@ export const SignUp = async(email, password, name) => {
     }
     
     catch(err) {
-        console.log(err)
+        return err;
     }
 }
 
