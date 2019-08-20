@@ -10,6 +10,7 @@ import P1GameScreen from './Components/P1GameScreen';
 import P1TopScoreScreen from './Components/P1TopScoreScreen';
 import ChangePasswordScreen from './Components/ChangePasswordScreen'
 import MultiplayerGameScreen from './Components/MultiplayerGameScreen'
+import SettingsScreen from './Components/SettingsScreen'
 
 const MainNav = createStackNavigator({
   Start: {
@@ -38,6 +39,13 @@ const MainNav = createStackNavigator({
     navigationOptions : {
       title: 'Home',
       headerLeft: (<View></View>)
+    }
+  },
+
+  Setting: {
+    screen: SettingsScreen,
+    navigationOptions: {
+      title: 'Settings'
     }
   },
 

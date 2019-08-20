@@ -9,7 +9,7 @@ export class StartScreen extends Component {
     
     render() {
         return (
-            <View style={[styles.container, {paddingTop: 10}]}>
+            <View style={[styles.container, {paddingTop: 80}]}>
                 <Image 
                     style={{height: 200, width: 200}}
                     source={require('../assets/images.png')}
