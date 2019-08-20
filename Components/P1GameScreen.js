@@ -25,6 +25,9 @@ const PointsTime= props => (
 )
 
 export default class P1GameScreen extends Component {
+    static navigationOptions = {
+        header: null
+    }
 
     constructor(props) {
         super(props)

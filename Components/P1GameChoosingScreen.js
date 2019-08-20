@@ -18,25 +18,25 @@ export class P1GameChoosingScreen extends Component {
 
                 <TouchableOpacity onPress={()=> this.goToGame('capital')}>
                     <View style={[styles.button, {flexDirection: 'row'}]}>
-                        <Text style={styles.buttonText}>COUNTRY CITY</Text>
+                        <Text style={styles.buttonText}>Country Capitals</Text>
                     </View>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={()=> this.goToGame('homo')}>
                     <View style={[styles.button, {flexDirection: 'row'}]}>
-                        <Text style={styles.buttonText}>HOMOPHONES</Text>
+                        <Text style={styles.buttonText}>Homophones</Text>
                     </View>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={()=> this.goToGame('math')}>
                     <View style={[styles.button, {flexDirection: 'row'}]}>
-                        <Text style={styles.buttonText}>GREATER LESSER</Text>
+                        <Text style={styles.buttonText}>Equations</Text>
                     </View>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={()=> this.goToGame('color')}>
                     <View style={[styles.button, {flexDirection: 'row'}]}>
-                        <Text style={styles.buttonText}>COLOR MATCH</Text>
+                        <Text style={styles.buttonText}>Color Match</Text>
                     </View>
                 </TouchableOpacity>
                

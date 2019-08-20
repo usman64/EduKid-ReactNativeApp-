@@ -4,6 +4,9 @@ import styles from './styles'
 import { StorePoints } from '../Server/firebaseFunc'
 
 export class P1TopScoreScreen extends Component {
+    static navigationOptions = {
+        header: null
+    }
 
     handleBackButton=() => {
             ToastAndroid.show('Back Button is not allowed', ToastAndroid.SHORT);

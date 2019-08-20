@@ -3,6 +3,10 @@ import { Button, KeyboardAvoidingView , Text, View, TextInput, TouchableOpacity,
 import styles from './styles'
 
 export class StartScreen extends Component {
+    static navigationOptions = {
+        header: null
+    }
+    
     render() {
         return (
             <View style={[styles.container, {paddingTop: 10}]}>

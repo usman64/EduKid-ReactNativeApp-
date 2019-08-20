@@ -125,7 +125,7 @@ export default class HomeScreen extends Component {
                         this.props.navigation.navigate('Player1', {user: this.props.navigation.getParam('user'), name: this.state.name})
                     }}>
                     <View style={styles.button}>
-                        <Text style={styles.buttonText}>PLAYER 1</Text>
+                        <Text style={styles.buttonText}>Single Player</Text>
                     </View>
                 </TouchableOpacity>
 
@@ -133,7 +133,15 @@ export default class HomeScreen extends Component {
                     this.props.navigation.navigate('Player2Game', {user: this.props.navigation.getParam('user'), name: this.state.name})
                 }}>
                     <View style={styles.button}>
-                        <Text style={styles.buttonText}>PLAYER 2</Text>
+                        <Text style={styles.buttonText}>Multi-Player</Text>
+                    </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={()=>{
+                    this.props.navigation.navigate('GameRules', {user: this.props.navigation.getParam('user'), name: this.state.name})
+                }}>
+                    <View style={styles.button}>
+                        <Text style={styles.buttonText}>Game Rules</Text>
                     </View>
                 </TouchableOpacity>
             </View>

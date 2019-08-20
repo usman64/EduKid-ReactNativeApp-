@@ -7,6 +7,8 @@ import homo from '../Games/homo'
 import math from '../Games/math'
 import PlayerButton from './PlayerButton'
 import Question from './Question'
+import styles from './styles'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 export const win = 'lawngreen'
@@ -39,12 +41,14 @@ export default class MultiplayerGameScreen extends Component {
             P1_score: 0,
             P2_score: 0,
             gameDuration: 60000, //60 secs
-            gameEnded: false
+            gameEnded: false,
+            showGoBack: false
         }
     }
 
     gameEndResult = () => {
         this.setState({gameEnded:true})
+        this.goback = setTimeout(()=> this.setState({showGoBack:true}),5000)
         clearInterval(this.gameinterval)
         let result = ''
         let winner = ''
@@ -60,22 +64,23 @@ export default class MultiplayerGameScreen extends Component {
 
         const resultDisplay = <Text style={{fontSize: 30, color: 'black'}}>{result}</Text>
 
+        let blinkingInterval = 500
         if(winner === "Player 1")
         {
-            this.resultInterval = setInterval(()=>
-            this.setState({player1_status: win}, () => setTimeout(() => this.setState({player1_status:defaultColor}),500))
-            ,1000)
+            this.resultInterval1 = setInterval(()=>
+            this.setState({player1_status: win}, () => setTimeout(() => this.setState({player1_status:defaultColor}),blinkingInterval))
+            ,blinkingInterval*2)
         }
         else if(winner === "Player 2")
         {
-            this.resultInterval = setInterval(()=>
-            this.setState({player2_status: win}, () => setTimeout(() => this.setState({player2_status:defaultColor}),500))
-            ,1000)
+            this.resultInterval2 = setInterval(()=>
+            this.setState({player2_status: win}, () => setTimeout(() => this.setState({player2_status:defaultColor}),blinkingInterval))
+            ,blinkingInterval*2)
         }
         else{
-            this.resultInterval = setInterval(()=>
-            this.setState({player2_status: win,player1_status:win}, () => setTimeout(() => this.setState({player2_status:defaultColor,player1_status:defaultColor}),500))
-            ,1000)
+            this.resultInterval3 = setInterval(()=>
+            this.setState({player2_status: win,player1_status:win}, () => setTimeout(() => this.setState({player2_status:defaultColor,player1_status:defaultColor}),blinkingInterval))
+            ,blinkingInterval*2)
         }
         this.setState({currentQ:resultDisplay})
 
@@ -154,7 +159,11 @@ export default class MultiplayerGameScreen extends Component {
 
     componentWillUnmount(){
         clearInterval(this.gameinterval)
-        clearInterval(this.resultInterval)
+        clearInterval(this.resultInterval1)
+        clearInterval(this.resultInterval2)
+        clearInterval(this.resultInterval3)
+        clearTimeout(this.gameTime)
+        clearTimeout(this.goback)
     }
 
 
@@ -253,6 +262,18 @@ export default class MultiplayerGameScreen extends Component {
                     />
                 </View>
 
+                {
+                    this.state.showGoBack?
+                    <TouchableOpacity 
+                    style={{marginLeft:'auto',marginRight:'auto',padding:5,width:200,backgroundColor:defaultColor,borderRadius:10}}
+                    onPress={()=> this.props.navigation.goBack()}
+                    >
+                        <Text style={mystyles.back}>
+                        Go Back</Text>
+                    </TouchableOpacity>
+                    :null
+                }
+
                 <View style={{flex:1}}>
                     <Question question={this.state.currentQ}/>
                     <Text style={mystyles.score}>{this.state.P2_score}</Text>
@@ -291,6 +312,15 @@ const mystyles = StyleSheet.create({
       color: defaultColor,
       padding: 5,
       paddingTop: 0
-    }
+    },
+
+    back:{
+        fontSize: 25,
+        fontWeight: 'bold',
+        color: 'white',
+        textAlign: "center"
+        // marginLeft: 'auto',
+        // marginRight: 'auto',
+   }
   });
   
