@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Button , Text, View, TextInput, TouchableOpacity, BackHandler, ToastAndroid} from 'react-native';
+import { StyleSheet, Button , Text, View, TextInput, TouchableOpacity, BackHandler, ToastAndroid, Alert} from 'react-native';
 import styles from './styles'
 import homo from '../Games/homo'
 import color from '../Games/colors'
@@ -25,6 +25,8 @@ const PointsTime= props => (
 )
 
 export default class P1GameScreen extends Component {
+    _ismounted = false
+
     static navigationOptions = {
         header: null
     }
@@ -34,7 +36,7 @@ export default class P1GameScreen extends Component {
         this.state = {
             game: [],
             points: 0,
-            timeRemain: 60,
+            timeRemain: this.props.navigation.getParam('time') || 60,
             gameTitle: '',
             question: '',
             count: 3,
@@ -44,6 +46,7 @@ export default class P1GameScreen extends Component {
             currentA:'',
             thecolor1: 'grey',
             thecolor2: 'grey',
+            backPresses: 0,
         }
     }
 
@@ -96,32 +99,65 @@ export default class P1GameScreen extends Component {
 
     }
 
+    quitting = () => {
+         Alert.alert(
+            'Exit App',
+            'Do you want to quit?', [{
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel'
+            }, {
+                text: 'OK',
+                onPress: () => this.props.navigation.navigate('Home')
+            }, ], {
+                cancelable: false
+            }
+        )
+    }
+
     handleBackButton=() => {
-        ToastAndroid.show('Back Button is not allowed', ToastAndroid.SHORT);
-        return true;
+        if(this.state.backPresses) {
+            this.quitting()
+            return true;
+        }
+        else {
+            ToastAndroid.show('Press again to quit', ToastAndroid.SHORT);
+            this.setState({backPresses: 1})
+            setTimeout(()=> this.setState({backPresses: 0}), 2000)
+            return true;
+        }
     }
 
     componentDidMount() {
 
+        this._ismounted = true
         this.setGame();    
 
         this.interval=setInterval(()=> this.decrementCount(),1000)
         this.thetimer=setInterval(()=>this.decrementTime(), 1000)
 
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton)
+        if(this._ismounted) {
+            BackHandler.addEventListener('hardwareBackPress', this.handleBackButton)
+        }
     }
 
     componentWillUnmount() {
         clearInterval(this.interval)
         clearInterval(this.thetimer)
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+        this._ismounted = false
     }
 
     decrementTime = () => {
+        let myuser = this.props.navigation.getParam('user')
+        let myname = this.props.navigation.getParam('name')
+        let thegame = this.props.navigation.getParam('game');
+
         if(this.state.showRest) {
             this.setState(prevState => ({timeRemain: prevState.timeRemain - 1}))
             if(this.state.timeRemain < 1) {
                 this.setState({timeRemain: null})
+                this.props.navigation.navigate('Player1Score', {user: myuser, name: myname, game: thegame, points: this.state.points})
             }
         }
     }
@@ -200,12 +236,6 @@ export default class P1GameScreen extends Component {
             let answer = color[random].answer
             console.log(color[random].color)
             this.setState({currentQ: myquestion, currentA: answer})
-        }
-
-        let myuser = this.props.navigation.getParam('user')
-        let myname = this.props.navigation.getParam('name')
-        if(this.state.timeRemain <=0) {
-            this.props.navigation.navigate('Player1Score', {user: myuser, name: myname, game: thegame, points: this.state.points})
         }
         
     }

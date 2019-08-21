@@ -23,7 +23,7 @@ export const SignUp = async(email, password, name) => {
     }
     
     catch(err) {
-        console.log(err)
+        return err;
     }
 }
 
@@ -60,27 +60,41 @@ export const ForgotPassword = async(email) => {
     }
 }
 
-export const StorePoints = async(points, game) => {
-    try {
-        const user= await Firebase.auth().currentUser()
-        if(user) {
-            Firebase.database().ref('users/' + user.uid).set({
-                
-            })
-        }
-    }
+export const UpdateDatabaseWithScore = (user, game ,score) => {
+    Firebase.database().ref('/users/'+`${user}`+'/'+`${game}`).push(score)
+    let gameRef = Firebase.database().ref('/game/'+`${game}`).push()
+    gameRef.set({
+        user:user,
+        score: score
+    });
 
-    catch(err) {
-        console.log(err)
-    }
-    // var uidRef = key.child(user).push().key
-    //Save the points to users/user.uid/game
+    return true
 }
 
-export const HighScore = game => {
-    var key = firebase.database().ref()
-    const arranged = key.child('users').orderByChild('points').limitToFirst(5)
-    return arranged
-    //extract top 5 users with high scores of that game and return array of users and 
-    //scores in descending order
-}
+export const  LocalHighscore = (user,game)=> {
+    console.log(user)    
+    let scoreArray = []
+    Firebase.database().ref('/users/'+`${user}`).child(`${game}`).orderByValue().limitToLast(5).once('value')
+    .then(function(snapshot) {
+        console.log(snapshot)
+      snapshot.forEach(function(temp){
+        // console.log(temp.val())
+        scoreArray.push(temp.val())
+      })
+      let reversed = scoreArray.reverse()
+      console.log(scoreArray)
+      return scoreArray
+    })
+  }
+
+export const GlobalHighscore= async(game)=> {
+    let scoreArray = []
+    let snapshot = await Firebase.database().ref('/game/'+`${game}`).orderByChild('score').limitToLast(5).once('value')
+    console.log(snapshot)
+    snapshot.forEach(temp => {
+        scoreArray.push(temp.val())    
+    })
+    scoreArray.reverse()
+    console.log(scoreArray);
+    return scoreArray;
+  }

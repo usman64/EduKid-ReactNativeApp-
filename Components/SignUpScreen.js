@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, KeyboardAvoidingView , Text, View, TextInput, TouchableOpacity, Alert} from 'react-native';
+import { Button, KeyboardAvoidingView , Text, View, TextInput, TouchableOpacity, Alert, Image} from 'react-native';
 import { YellowBox } from 'react-native';
 import styles from './styles'
 import Firebase from '../Server/firebase'
@@ -21,25 +21,44 @@ export default class SignUpScreen extends Component {
     signupUser = async() => {
 
         const { navigation } = this.props
-        const { name, email, password } = this.state 
+        const { name, email, password } = this.state
 
-        try{
-            await SignUp(email, password, name)
-            navigation.navigate('Login', {signup: true})
+        if(name.length <= 0) {
+            Alert.alert('Error: Please enter your name for God sake')
+            return;
         }
-        
-        catch(err) {
-            console.log(err)
-            Alert.alert('Error Occurred! Please try again!')
-        }
+
+        else {
+            try{
+
+                const err = await SignUp(email, password, name)
+                if(err) {
+                    console.log(err)
+                    Alert.alert(`Error: ${JSON.stringify(err.message)}`)
+                }
+                else {
+                    navigation.navigate('Login', {signup: true})
+                }
+            }
+            
+            catch(err) {
+                console.log(err)
+                let errorMessage = err.Error
+                Alert.alert(errorMessage)
+            }
+
+        } 
+
     }
 
     render() {
         return (
-            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+            <KeyboardAvoidingView style={[styles.container, {paddingTop: 30}]} behavior="padding" enabled>
         
-                <Text style={styles.welcome}>HELLO NEW USER</Text>
-                <View style={{height:30}}/>
+                <Image 
+                    style={{height: 180, width: 180}}
+                    source={require('../assets/images.png')}
+                />
 
                 <View style={styles.emailContainer}>
                     <TextInput style={styles.textInput} placeholder="Full Name"

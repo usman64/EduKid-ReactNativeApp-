@@ -7,7 +7,8 @@ export class P1GameChoosingScreen extends Component {
     goToGame=(game) => {
         let user = this.props.navigation.getParam('user')
         let name = this.props.navigation.getParam('name')
-        this.props.navigation.navigate('Player1Game', {game: game, user: user, name: name})
+        let time = this.props.navigation.getParam('time')
+        this.props.navigation.navigate('Player1Game', {game: game, user: user, name: name, time:time})
     }
 
     render() {
