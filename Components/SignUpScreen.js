@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, KeyboardAvoidingView , Text, View, TextInput, TouchableOpacity, Alert} from 'react-native';
+import { Button, KeyboardAvoidingView , Text, View, TextInput, TouchableOpacity, Alert, Image} from 'react-native';
 import { YellowBox } from 'react-native';
 import styles from './styles'
 import Firebase from '../Server/firebase'
@@ -53,10 +53,12 @@ export default class SignUpScreen extends Component {
 
     render() {
         return (
-            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+            <KeyboardAvoidingView style={[styles.container, {paddingTop: 30}]} behavior="padding" enabled>
         
-                <Text style={styles.welcome}>HELLO NEW USER</Text>
-                <View style={{height:30}}/>
+                <Image 
+                    style={{height: 180, width: 180}}
+                    source={require('../assets/images.png')}
+                />
 
                 <View style={styles.emailContainer}>
                     <TextInput style={styles.textInput} placeholder="Full Name"

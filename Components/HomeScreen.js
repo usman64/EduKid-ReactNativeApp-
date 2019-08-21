@@ -60,11 +60,19 @@ export default class HomeScreen extends Component {
         this.readFromDb();
     }
 
-    readFromDb = () => {    
-        Firebase.database().ref('/users/' + this.props.navigation.getParam('user').uid).on('value',snapshot => {
-            const object = snapshot.val()
-            this.setState({name: object.name})
-        }) 
+    readFromDb = () => {
+        const theuser = this.props.navigation.getParam('user');
+        const thename = theuser.displayName
+        if(thename) {
+            this.setState({name: thename})
+        }
+
+        else {
+            Firebase.database().ref('/users/' + this.props.navigation.getParam('user').uid).on('value',snapshot => {
+                const object = snapshot.val()
+                this.setState({name: object.name})
+            }) 
+        }
     }
 
 

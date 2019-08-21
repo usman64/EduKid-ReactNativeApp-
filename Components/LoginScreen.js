@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import {Alert, Button, KeyboardAvoidingView , Text, View, TextInput, TouchableOpacity} from 'react-native';
+import {Alert, Button, KeyboardAvoidingView , Text, View, TextInput, TouchableOpacity, Image,  BackHandler} from 'react-native';
 import styles from './styles'
-import Firebase from '../Server/firebase'
+import { HeaderBackButton } from 'react-navigation';
 import { Login, ForgotPassword } from '../Server/firebaseFunc'
 import Prompt from 'react-native-prompt-crossplatform';
+
 
 const Status = props => {
    if(props.signup) {
@@ -33,6 +34,16 @@ const Status = props => {
 
 export default class LoginScreen extends Component {
 
+    static navigationOptions = ({ navigation }) => {
+        return{
+          headerLeft: (
+                <HeaderBackButton onPress={()=> {
+                    navigation.navigate('Start')
+                }}/>
+            )
+        }
+    }    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -42,6 +53,21 @@ export default class LoginScreen extends Component {
             promptVal: '',
         }
 
+    }
+
+
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+    
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    handleBackButtonClick = () => {
+        const { navigation } = this.props 
+        navigation.navigate('Start')
+        return true;
     }
 
     change = text => {
@@ -83,6 +109,7 @@ export default class LoginScreen extends Component {
         }
     } 
 
+
     forgetPassword = async(email) => {
         try {
             const decision = await ForgotPassword(email)
@@ -104,7 +131,7 @@ export default class LoginScreen extends Component {
    
     render() {
         return (
-            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+            <KeyboardAvoidingView style={[styles.container, {paddingTop: 10}]} behavior="padding" enabled>
 
                 <Prompt
                     title="Enter your email"
@@ -125,8 +152,11 @@ export default class LoginScreen extends Component {
                     }}
                 />
 
-                <Text style={styles.welcome}>WELCOME</Text>
-                <View style={{height:30}}/>
+                <Image 
+                    style={{height: 180, width: 180}}
+                    source={require('../assets/images.png')}
+                />
+
 
                 <View style={styles.emailContainer}>
                     <TextInput 
