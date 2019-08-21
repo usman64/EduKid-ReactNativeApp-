@@ -38,7 +38,7 @@ const MainNav = createStackNavigator({
     screen: HomeScreen,
     navigationOptions : {
       title: 'Home',
-      headerLeft: (<View></View>)
+      headerLeft: null
     }
   },
 
