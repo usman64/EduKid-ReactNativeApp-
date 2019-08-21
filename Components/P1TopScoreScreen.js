@@ -1,11 +1,29 @@
 import React, { Component } from 'react'
 import { StyleSheet, Button , Text, View, TextInput, TouchableOpacity, BackHandler, ToastAndroid} from 'react-native';
 import styles from './styles'
-import { StorePoints } from '../Server/firebaseFunc'
+import { UpdateDatabaseWithScore, LocalHighscore } from '../Server/firebaseFunc'
+import Firebase from '../Server/firebase'
+
+const UserTopScores = props => {
+    <View></View>
+}
 
 export class P1TopScoreScreen extends Component {
+
     static navigationOptions = {
         header: null
+    }
+
+    points = this.props.navigation.getParam('points')
+    thegame = this.props.navigation.getParam('game')
+    uid = Firebase.auth().currentUser.uid
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            userHigh: [],
+            overallHigh: []
+        }
     }
 
     handleBackButton=() => {
@@ -14,19 +32,30 @@ export class P1TopScoreScreen extends Component {
     }
 
     pointsStoring = async() => {
-
-        let points = this.props.navigation.getParam('points')
-        let thegame = this.props.navigation.getParam('game')
-
         try {
-            await StorePoints(points,thegame)
+            let decision = await UpdateDatabaseWithScore(this.uid, this.thegame, this.points);
+            if(decision) {
+                console.log('Points Stored')
+            }
+
+            else {
+                console.log('Nah not happening')
+            }
         }
 
         catch(err) {
             console.log(err)
         }
     }
+
+    userHighScores = async() => {
+        const thescores = await LocalHighscore(this.uid, this.game);
+
+    }
+
     componentDidMount() {
+        this.pointsStoring()
+        this.userHighScores()
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
       
     }

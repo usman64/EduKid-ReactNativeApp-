@@ -3,7 +3,7 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "expoServerNgrokUrl": "https://k7-fuw.aj-1997.edukid.exp.direct",
+  "packagerNgrokUrl": "https://packager.k7-fuw.aj-1997.edukid.exp.direct",
+  "ngrokPid": 16179
 }

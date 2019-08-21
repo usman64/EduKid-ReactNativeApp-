@@ -25,6 +25,8 @@ const PointsTime= props => (
 )
 
 export default class P1GameScreen extends Component {
+    _ismounted = false
+
     static navigationOptions = {
         header: null
     }
@@ -128,18 +130,22 @@ export default class P1GameScreen extends Component {
 
     componentDidMount() {
 
+        this._ismounted = true
         this.setGame();    
 
         this.interval=setInterval(()=> this.decrementCount(),1000)
         this.thetimer=setInterval(()=>this.decrementTime(), 1000)
 
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton)
+        if(this._ismounted) {
+            BackHandler.addEventListener('hardwareBackPress', this.handleBackButton)
+        }
     }
 
     componentWillUnmount() {
         clearInterval(this.interval)
         clearInterval(this.thetimer)
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+        this._ismounted = false
     }
 
     decrementTime = () => {
@@ -230,12 +236,6 @@ export default class P1GameScreen extends Component {
             let answer = color[random].answer
             console.log(color[random].color)
             this.setState({currentQ: myquestion, currentA: answer})
-        }
-
-        let myuser = this.props.navigation.getParam('user')
-        let myname = this.props.navigation.getParam('name')
-        if(this.state.timeRemain <=0) {
-            this.props.navigation.navigate('Player1Score', {user: myuser, name: myname, game: thegame, points: this.state.points})
         }
         
     }
