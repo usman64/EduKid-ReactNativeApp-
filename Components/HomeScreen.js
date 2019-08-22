@@ -52,7 +52,7 @@ export default class HomeScreen extends Component {
         headerRight: (<TouchableOpacity
             onPress={() => navigation.navigate('Setting')}         
         >
-            <View style={{paddingRight: 25}}>
+            <View style={{padding: 10, paddingRight:20, paddingTop: 0}}>
                 <Icon
                 //  raised
                 //  name='cog'
@@ -138,7 +138,7 @@ export default class HomeScreen extends Component {
                     this.props.navigation.navigate('GameRules', {user: this.props.navigation.getParam('user'), name: this.state.name})
                 }}>
                     <View style={styles.button}>
-                        <Text style={styles.buttonText}>Game Rules</Text>
+                        <Text style={styles.buttonText}>Game Instructions</Text>
                     </View>
                 </TouchableOpacity>
             </View>

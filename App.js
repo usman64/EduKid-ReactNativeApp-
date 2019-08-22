@@ -24,14 +24,14 @@ const MainNav = createStackNavigator({
     screen: LoginScreen,
     navigationOptions: {
       title: 'Login',
-    headerStyle: {
-      backgroundColor: '#129793',
+      headerStyle: {
+        backgroundColor: '#129793',
+      },
+      headerTitleStyle: {
+         color: 'white',
+      },
+      headerTintColor: 'white'
     },
-    headerTitleStyle: {
-       color: 'white',
-    },
-    headerTintColor: 'white'
-  }
   },
 
   Signup: {
