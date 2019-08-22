@@ -170,7 +170,7 @@ export default class LoginScreen extends Component {
 
                 </View>
 
-                <View style={styles.passwordContainer}>
+                <View style={[styles.passwordContainer,{marginTop: 20}]}>
                     <TextInput 
                         style={styles.textInput} 
                         placeholder="Password"

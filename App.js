@@ -24,37 +24,84 @@ const MainNav = createStackNavigator({
     screen: LoginScreen,
     navigationOptions: {
       title: 'Login',
+    headerStyle: {
+      backgroundColor: '#129793',
     },
+    headerTitleStyle: {
+       color: 'white',
+    },
+    headerTintColor: 'white'
+  }
   },
 
   Signup: {
     screen: SignUpScreen,
     navigationOptions: {
       title: 'Signup',
+    headerStyle: {
+      backgroundColor: '#129793',
     },
+    headerTitleStyle: {
+       color: 'white',
+    },
+    headerTintColor: 'white'
+  },
+
   },
 
   Home: {
     screen: HomeScreen,
     navigationOptions : {
       title: 'Home',
-      headerLeft: null
+      headerLeft: null,
+
+      headerStyle: {
+        backgroundColor: '#129793',
+      },
+      headerTitleStyle: {
+         color: 'white',
+      },
     }
   },
 
   Setting: {
     screen: SettingsScreen,
     navigationOptions: {
-      title: 'Settings'
+      title: 'Settings',
+      headerStyle: {
+        backgroundColor: '#129793',
+      },
+      headerTitleStyle: {
+         color: 'white',
+      },
+      headerTintColor: 'white'
     }
   },
 
   ChangePass : {
     screen: ChangePasswordScreen,
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#129793',
+      },
+      headerTitleStyle: {
+         color: 'white',
+      },
+      headerTintColor: 'white'
+    }
   },
 
   Player1: {
-    screen: P1GameChoosingScreen
+    screen: P1GameChoosingScreen,
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#129793',
+      },
+      headerTitleStyle: {
+         color: 'white',
+      },
+      headerTintColor: 'white'
+    }
   },
 
   Player1Game: {
@@ -78,8 +125,8 @@ const MainNav = createStackNavigator({
 
 },
 {
-  initialRouteName: 'Player2Game'
-  // initialRouteName: 'Start'
+  // initialRouteName: 'Player2Game'
+  initialRouteName: 'Start'
 })
 
 const AppContainer = createAppContainer(MainNav)

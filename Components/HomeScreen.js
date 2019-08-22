@@ -1,23 +1,25 @@
 import React, { Component } from 'react'
-import { StyleSheet, Button , Text, View, TextInput, TouchableOpacity,Alert, Image } from 'react-native';
+import { StyleSheet,UIManager, findNodeHandle, Button , Text, View, TextInput, TouchableOpacity,Alert, Image,Picker } from 'react-native';
 import styles from './styles'
 import Firebase from '../Server/firebase'  
 import { YellowBox } from 'react-native'; 
 import { DisplayName } from '../Server/firebaseFunc'
+import { Icon } from 'react-native-elements'
+import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu'
 
-const SettingButton= props => (
-    <View style={{flexDirection: 'row'}}>
+// const SettingButton= props => (
+//     <View style={{flexDirection: 'row'}}>
 
-        <TouchableOpacity style={{paddingLeft: 180}} onPress={()=>{
-            props.nav.navigate('Setting');     
-        }}>
-            <View style={[styles.button, {width: 120}]}>
-                <Text style={styles.buttonText}>SETTINGS</Text>
-            </View>
-        </TouchableOpacity>
+//         <TouchableOpacity style={{paddingLeft: 180}} onPress={()=>{
+//             props.nav.navigate('Setting');     
+//         }}>
+//             <View style={[styles.button, {width: 120}]}>
+//                 <Text style={styles.buttonText}>SETTINGS</Text>
+//             </View>
+//         </TouchableOpacity>
 
-    </View>
-)
+//     </View>
+// )
 
 const PassChange = props => {
     if(props.success) {
@@ -46,6 +48,22 @@ const PassChange = props => {
 
 
 export default class HomeScreen extends Component {
+    static navigationOptions = ({navigation}) => ({
+        headerRight: (<TouchableOpacity
+            onPress={() => navigation.navigate('Setting')}         
+        >
+            <View style={{paddingRight: 25}}>
+                <Icon
+                //  raised
+                //  name='cog'
+                name='ellipsis-v'
+                type='font-awesome'
+                //  color='#129793'
+                color='white'
+                />
+             </View>
+           </TouchableOpacity>),
+    })
 
     constructor(props) {
         super(props)
@@ -83,7 +101,8 @@ export default class HomeScreen extends Component {
             </Text>
         return (
             <View style = {[mystyles.thecontainer,{paddingTop: 0}]}>
-                <SettingButton nav = {this.props.navigation}/>
+                {/* <SettingButton nav = {this.props.navigation}/> */}
+                
 
                 <Image 
                     style={{height: 180, width: 180}}
@@ -106,7 +125,9 @@ export default class HomeScreen extends Component {
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={()=>{
-                    this.props.navigation.navigate('Player2Game', {user: this.props.navigation.getParam('user'), name: this.state.name})
+                    this.props.navigation.navigate('Player2Game', {user: this.props.navigation.getParam('user'),
+                                                                    name: this.state.name,
+                                                                    time: this.props.navigation.getParam('time')})
                 }}>
                     <View style={styles.button}>
                         <Text style={styles.buttonText}>Multi-Player</Text>

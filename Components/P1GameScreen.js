@@ -101,7 +101,7 @@ export default class P1GameScreen extends Component {
 
     quitting = () => {
          Alert.alert(
-            'Exit App',
+            'Exit Game',
             'Do you want to quit?', [{
                 text: 'Cancel',
                 onPress: () => console.log('Cancel Pressed'),
@@ -311,10 +311,10 @@ const mystyle = new StyleSheet.create({
     },
 
     mybutton: {
-        width:170,
+        width: 180,
         borderColor: 'grey',
         borderWidth: 1,
-        height:65,
+        height:150,
         padding:10,
         borderRadius:12,
         marginTop:20,

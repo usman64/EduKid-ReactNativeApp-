@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, Button , Text, View, TextInput, TouchableOpacity, Image, Alert} from 'react-native';
 import styles from './styles'
 import { Logout } from '../Server/firebaseFunc'
+import { Icon } from 'react-native-elements'
 
 const GameDuration = props => (
     <View style={{flexDirection: 'row'}}>
@@ -53,6 +54,14 @@ export class SettingsScreen extends Component {
 
         return (
             <View style = {styles.container}>
+                <Icon
+                //  raised
+                name='cog'
+                type='font-awesome'
+                size={55}
+                //  color='#129793'
+                color='#ddd'
+                />
                 <Text style={styles.welcome}>SETTINGS</Text>
                 <View style={{height:30}}/>
 

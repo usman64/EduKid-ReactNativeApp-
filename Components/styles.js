@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 4,
         borderBottomLeftRadius:0,
         borderBottomRightRadius:0,
-        borderBottomWidth:0,
+        // borderBottomWidth:0,
         backgroundColor:'#F5F6F7'
       },
       passwordContainer: {

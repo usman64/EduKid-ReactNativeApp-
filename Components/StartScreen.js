@@ -6,6 +6,7 @@ import Expo from 'expo'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Firebase from '../Server/firebase'
 import firebase from 'firebase'
+import color from '../Games/colors';
 
 const SocialMediaIcons = props => (
     <View style={{paddingTop: 30}}>  
@@ -63,25 +64,25 @@ export class StartScreen extends Component {
     
     render() {
         return (
-            <View style={[styles.container, {paddingTop: 80}]}>
+            <View style={[styles.container, { backgroundColor:'#129793',paddingTop: 80}]}>
                 <Image 
                     style={{height: 200, width: 200}}
                     source={require('../assets/images.png')}
                 />
-                <Text style={styles.welcome}>WELCOME TO EDUKID</Text>
+                <Text style={[styles.welcome,{color: 'white', textAlign: 'center'}]}>WELCOME TO EDUKID</Text>
                 <View style={{height:30}}/>
 
                 <TouchableOpacity onPress={()=> {
                         this.props.navigation.navigate('Login')
                     }}>
-                    <View style={styles.button}>
-                        <Text style={styles.buttonText}>LOG IN</Text>
+                    <View style={[styles.button, {backgroundColor: 'white'}]}>
+                        <Text style={[styles.buttonText, {color: '#129793'}]}>LOG IN</Text>
                     </View>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={()=> {this.props.navigation.navigate('Signup')}}>
-                    <View style={styles.button}>
-                        <Text style={styles.buttonText}>SIGN UP</Text>
+                    <View style={[styles.button, {backgroundColor: 'white'}]}>
+                        <Text style={[styles.buttonText, {color: '#129793'}]}>SIGN UP</Text>
                     </View>
                 </TouchableOpacity>
 

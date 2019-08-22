@@ -71,7 +71,7 @@ export class ChangePasswordScreen extends Component {
                     />     
                 </View>
 
-                <View style={styles.passwordContainer}>
+                <View style={[styles.passwordContainer,{marginTop: 20}]}>
                     <TextInput style={styles.textInput} 
                         placeholder="New Password"
                         onChangeText={npass1=> this.setState({npass1})}
@@ -80,7 +80,7 @@ export class ChangePasswordScreen extends Component {
 
                 </View>
 
-                <View style={styles.passwordContainer}>
+                <View style={[styles.passwordContainer,{marginTop: 20}]}>
                     <TextInput style={styles.textInput} 
                         placeholder="Re-type Password"
                         onChangeText={npass2=> this.setState({npass2})}

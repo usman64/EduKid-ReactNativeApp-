@@ -60,12 +60,12 @@ export default class SignUpScreen extends Component {
                     source={require('../assets/images.png')}
                 />
 
-                <View style={styles.emailContainer}>
+                <View style={[styles.emailContainer,{marginBottom:20}]}>
                     <TextInput style={styles.textInput} placeholder="Full Name"
                         onChangeText={name=> this.setState({name})}/>
                 </View>
 
-                <View style={styles.emailContainer}>
+                <View style={[styles.emailContainer,{marginBottom:20}]}>
                     <TextInput style={styles.textInput} placeholder="Email"
                         keyboardType="email-address"
                         onChangeText={email=> this.setState({email})}

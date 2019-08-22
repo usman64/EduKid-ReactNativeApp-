@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View,Text,StyleSheet,StatusBar,Vibration } from 'react-native';
+import {View,Text,StyleSheet,StatusBar,BackHandler,Vibration,Alert,ToastAndroid } from 'react-native';
 import {CountDown} from './CountDown'
 import capital from '../Games/capital'
 import color from '../Games/colors'
@@ -9,11 +9,13 @@ import PlayerButton from './PlayerButton'
 import Question from './Question'
 import styles from './styles'
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StackActions, NavigationActions } from 'react-navigation';
+
 
 
 export const win = 'lawngreen'
 export const loss = 'red'
-export const defaultColor = 'grey'
+export const defaultColor = '#129793'
 
 let P1_hitTime = 0
 let P2_hitTime = 0
@@ -40,11 +42,41 @@ export default class MultiplayerGameScreen extends Component {
             currentA: '',
             P1_score: 0,
             P2_score: 0,
-            gameDuration: 120000, //60 secs
+            gameDuration: (this.props.navigation.getParam('time') || 60) *1000,
+            // gameDuration: 120000, //60 secs
             gameEnded: false,
             showGoBack: false
         }
     }
+
+    quitting = () => {
+        Alert.alert(
+           'Exit Game',
+           'Do you want to quit?', [{
+               text: 'Cancel',
+               onPress: () => console.log('Cancel Pressed'),
+               style: 'cancel'
+           }, {
+               text: 'OK',
+               onPress: () => this.props.navigation.navigate('Home')
+           }, ], {
+               cancelable: false
+           }
+       )
+   }
+
+   handleBackButton=() => {
+       if(this.state.backPresses) {
+           this.quitting()
+           return true;
+       }
+       else {
+           ToastAndroid.show('Press again to quit', ToastAndroid.SHORT);
+           this.setState({backPresses: 1})
+           setTimeout(()=> this.setState({backPresses: 0}), 2000)
+           return true;
+       }
+   }
 
     gameEndResult = () => {
         this.setState({gameEnded:true})
@@ -147,6 +179,9 @@ export default class MultiplayerGameScreen extends Component {
     }
 
     componentDidMount(){
+        this._ismounted = true
+
+        console.log(this.props.navigation.getParam('time'))
         this.interval=setInterval(()=> this.decrementCount(),1000)
         this.gameinterval=setInterval(()=> {
             this.gameSelection()
@@ -155,7 +190,12 @@ export default class MultiplayerGameScreen extends Component {
         ,3000)
 
         this.gameTime = setTimeout(() => this.gameEndResult(), this.state.gameDuration)
+
+        if(this._ismounted) {
+            BackHandler.addEventListener('hardwareBackPress', this.handleBackButton)
+        }
     }
+
 
     componentWillUnmount(){
         clearInterval(this.gameinterval)
@@ -164,6 +204,20 @@ export default class MultiplayerGameScreen extends Component {
         clearInterval(this.resultInterval3)
         clearTimeout(this.gameTime)
         clearTimeout(this.goback)
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+        this._ismounted = false
+        console.log("Unmounted 2 Player")
+
+        // const resetAction = StackActions.reset({
+        //     index: 3,
+        //     actions: [
+        //       NavigationActions.navigate({ routeName: 'Start' }),
+        //       NavigationActions.navigate({ routeName: 'Login' }),
+        //       NavigationActions.navigate({ routeName: 'Home', user: this.props.navigation.getParam('user'), name:}),
+        //       NavigationActions.navigate({ routeName: 'Player2Game' }),
+        //     ],
+        //   });
+        //   this.props.navigation.dispatch(resetAction);
     }
 
 
@@ -186,22 +240,23 @@ export default class MultiplayerGameScreen extends Component {
     // }
 
     myPress1 = () => {
-        if(!this.state.gameEnded)
+        if(!this.state.gameEnded && this._ismounted)
         {
-            // P1_hitTime = this.getCurrentTime()
-            // let copyP2_hitTime = P2_hitTime
-            // if(P1_hitTime < copyP2_hitTime && copyP2_hitTime || P1_hitTime > copyP2_hitTime && !copyP2_hitTime)
-            // {
+            P1_hitTime = this.getCurrentTime()
+            let copyP2_hitTime = P2_hitTime
+            if(P1_hitTime < copyP2_hitTime && copyP2_hitTime || P1_hitTime > copyP2_hitTime && !copyP2_hitTime)
+            {
                 if(this.state.currentA)
                 {
-                    this.setState({player1_status: win}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:this.incrementScore(prevState.P1_score)})), 1000))
+                    this.setState({player1_status: win}, () =>  setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:this.incrementScore(prevState.P1_score)})), 1000))
                 }
                 else
                 {
                     this.setState({player1_status: loss}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:this.decrementScore(prevState.P1_score)})), 1000))
                 }
                 Vibration.vibrate(50)
-            // }
+            }
+            // Alert.alert('1')
             // else{
             //     this.setState({player1_status: loss}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:prevState.P1_score + 10})), 1000))
             // }
@@ -209,12 +264,12 @@ export default class MultiplayerGameScreen extends Component {
 }
 
     myPress2 = () => {
-        if(!this.state.gameEnded)
+        if(!this.state.gameEnded && this._ismounted)
         {
-            // P2_hitTime = this.getCurrentTime()
-            // let copyP1_hitTime = P1_hitTime
-            // if(P2_hitTime < copyP1_hitTime && copyP1_hitTime || P2_hitTime > copyP1_hitTime && !copyP1_hitTime)
-            // {
+            P2_hitTime = this.getCurrentTime()
+            let copyP1_hitTime = P1_hitTime
+            if(P2_hitTime < copyP1_hitTime && copyP1_hitTime || P2_hitTime > copyP1_hitTime && !copyP1_hitTime)
+            {
                 if(this.state.currentA)
                 {
                     this.setState({player2_status: win}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.incrementScore(prevState.P2_score)})), 1000))
@@ -224,7 +279,8 @@ export default class MultiplayerGameScreen extends Component {
                     this.setState({player2_status: loss}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.decrementScore(prevState.P2_score)})), 1000))
                 }
                 Vibration.vibrate(50)
-            // }
+            }
+            // Alert.alert('2')
             // else{
             //     this.setState({player2_status: win}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:prevState.P2_score + 10})), 1000))
             // }
@@ -244,9 +300,9 @@ export default class MultiplayerGameScreen extends Component {
     decrementScore = (prevState_score) => prevState_score - 1
 
     render(){
-        // if(this.state.showCountDown) {
-        //     return <CountDown count={this.state.count} />
-        // }
+        if(this.state.showCountDown) {
+            return <CountDown count={this.state.count} />
+        }
 
         return(
             <View style={mystyles.container}>
