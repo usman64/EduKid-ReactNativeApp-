@@ -24,6 +24,30 @@ const PointsTime= props => (
     </View>
 )
 
+const Remarks = props => {
+    if(props.sremark == 1) {
+        let random = Math.round(Math.random() * (props.good.length - 1))
+        return (
+            <View style={{paddingTop: 120}}>
+                <Text style={{color: 'green',fontSize: 25}}>{props.good[random]}</Text>
+            </View>
+        )
+    }
+
+    else if(props.sremark == -1) {
+        let random = Math.round(Math.random() * (props.bad.length - 1))
+        return (
+            <View style={{paddingTop: 120}}>
+                <Text style={{color: 'red', fontSize: 25}}>{props.bad[random]}</Text>
+            </View> 
+        )
+    }
+
+    else return <View style={{paddingTop: 150}}></View>;
+
+    
+}
+
 export default class P1GameScreen extends Component {
     _ismounted = false
 
@@ -47,6 +71,9 @@ export default class P1GameScreen extends Component {
             thecolor1: 'grey',
             thecolor2: 'grey',
             backPresses: 0,
+            sendRemarks: 0,
+            goodRemarks: ['Good!', 'Excellent!', 'Spot on!', 'Damn!', 'Hell Yeah!'],
+            badRemarks: ['No!', 'Try Again!', 'Nah!', 'Oops!', 'Uh Oh!']
         }
     }
 
@@ -67,8 +94,7 @@ export default class P1GameScreen extends Component {
         else if(thegame === 'math') {
             this.setState({game: math, gameTitle: 'Equations', question: 'Is the statement correct?'})
             let random = Math.round(Math.random() * (math.length-1))
-            console.log(random)
-            let myquestion =  <Text style={{fontSize: 30, color: 'green'}}>{math[random].exp}</Text>
+            let myquestion =  <Text style={{fontSize: 30, color: 'blue'}}>{math[random].exp}</Text>
             let answer = math[random].answer
             this.setState({currentQ: myquestion, currentA: answer})
         }
@@ -76,7 +102,6 @@ export default class P1GameScreen extends Component {
         else if(thegame === 'capital') {
             this.setState({game: capital, gameTitle: 'Country-Capital', question: 'Is the city captital of the country?'})
             let random = Math.round(Math.random() * (capital.length-1))
-            console.log(random)
             let myquestion = 
                 <Text style={{fontSize: 30}}>
                     <Text>Country: <Text style={{color: 'green'}}>{capital[random].country}</Text>{`\n`}</Text>
@@ -89,11 +114,9 @@ export default class P1GameScreen extends Component {
         else if(thegame === 'color') {
             this.setState({game: color, gameTitle: 'Color Match', question: 'Does the word matches the color'})
             let random = Math.round(Math.random() * (color.length-1))
-            console.log(random)
             let myquestion = 
                 <Text style={{fontSize: 30, color: color[random].color, fontWeight: 'bold'}}>{color[random].name}</Text>
             let answer = color[random].answer
-            console.log(color[random].color)
             this.setState({currentQ: myquestion, currentA: answer})
         }
 
@@ -170,30 +193,29 @@ export default class P1GameScreen extends Component {
     }
 
     checkAnswer(decision, button) {
-        console.log(decision, this.state.currentA)
         if(this.state.currentA === decision) {
             this.setState(prevState => ({points: prevState.points + 1}))
             if(button === 'button1') {
-                this.setState({thecolor1: 'green'})
-                setTimeout(()=> this.setState({thecolor1: 'grey'}), 200)
+                this.setState({thecolor1: 'green', sendRemarks: 1})
+                setTimeout(()=> this.setState({thecolor1: 'grey', sendRemarks: 0}), 200)
             }
 
             else {
-                this.setState({thecolor2: 'green'})
-                setTimeout(()=> this.setState({thecolor2: 'grey'}), 200)
+                this.setState({thecolor2: 'green',sendRemarks: 1})
+                setTimeout(()=> this.setState({thecolor2: 'grey', sendRemarks: 0}), 200)
             }
         }
 
         else {
             this.setState(prevState => ({points: prevState.points - 1}))
             if(button === 'button1') {
-                this.setState({thecolor1: 'red'})
-                setTimeout(()=> this.setState({thecolor1: 'grey'}), 200)
+                this.setState({thecolor1: 'red', sendRemarks: -1})
+                setTimeout(()=> this.setState({thecolor1: 'grey',sendRemarks: 0}), 200)
             }
 
             else {
-                this.setState({thecolor2: 'red'})
-                setTimeout(()=> this.setState({thecolor2: 'grey'}), 200)
+                this.setState({thecolor2: 'red',sendRemarks: -1})
+                setTimeout(()=> this.setState({thecolor2: 'grey',sendRemarks: 0}), 200)
             }
         }
 
@@ -212,7 +234,7 @@ export default class P1GameScreen extends Component {
 
         else if(thegame === 'math') {
             let random = Math.round(Math.random() * (math.length-1))
-            let myquestion =  <Text style={{fontSize: 30, color: 'green'}}>{math[random].exp}</Text>
+            let myquestion =  <Text style={{fontSize: 30, color: 'blue'}}>{math[random].exp}</Text>
             let answer = math[random].answer
             this.setState({currentQ: myquestion, currentA: answer})
         }
@@ -230,11 +252,9 @@ export default class P1GameScreen extends Component {
 
         else if(thegame === 'color') {
             let random = Math.round(Math.random() * (color.length-1))
-            console.log(random)
             let myquestion = 
                 <Text style={{fontSize: 30, color: color[random].color, fontWeight: 'bold'}}>{color[random].name}</Text>
             let answer = color[random].answer
-            console.log(color[random].color)
             this.setState({currentQ: myquestion, currentA: answer})
         }
         
@@ -261,15 +281,20 @@ export default class P1GameScreen extends Component {
             return (
                 <View style={[styles.container,{paddingTop: 30}]}>
                     <PointsTime points={this.state.points} time={this.state.timeRemain}/>
-                    <Text style={[styles.welcome, {fontSize: 30, letterSpacing: 1}]}>{this.state.gameTitle}</Text>
+                    <Text style={[styles.welcome, {fontSize: 40, letterSpacing: 1, color:'black'}]}>{this.state.gameTitle}</Text>
                      <View style={{height:10}}/>
                     <Text style={{fontSize: 20}}>{this.state.question}</Text>
                     <View style={{height:30}}/>
                     
                     <View>{this.state.currentQ}</View>
+
+                    <Remarks sremark={this.state.sendRemarks}
+                             good={this.state.goodRemarks }
+                             bad={this.state.badRemarks }
+                    />
                     
                     <View style={[mystyle.buttons]}>
-                        <TouchableOpacity onPress={()=> {
+                        <TouchableOpacity onPressIn={()=> {
                             this.checkAnswer(true, 'button1');
                             
                         }}>
@@ -280,7 +305,7 @@ export default class P1GameScreen extends Component {
 
                         <View style={{paddingLeft: 20}}></View>
 
-                        <TouchableOpacity onPress={()=> {
+                        <TouchableOpacity onPressIn={()=> {
                             this.checkAnswer(false, 'button2');
                         }}>
                             <View style={[mystyle.mybutton, {backgroundColor: this.state.thecolor2}]}>
@@ -307,14 +332,14 @@ const mystyle = new StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems:"center",
-        paddingTop: 160,
+        paddingTop: 100,
     },
 
     mybutton: {
         width: 180,
         borderColor: 'grey',
         borderWidth: 1,
-        height:150,
+        height:100,
         padding:10,
         borderRadius:12,
         marginTop:20,

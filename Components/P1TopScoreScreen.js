@@ -1,11 +1,25 @@
 import React, { Component } from 'react'
-import { StyleSheet, Button , Text, View, TextInput, TouchableOpacity, BackHandler, ToastAndroid} from 'react-native';
+import { StyleSheet, Button , Text, View, TextInput, TouchableOpacity, BackHandler, Alert} from 'react-native';
 import styles from './styles'
 import { UpdateDatabaseWithScore, LocalHighscore } from '../Server/firebaseFunc'
 import Firebase from '../Server/firebase'
 
 const UserTopScores = props => {
-    <View></View>
+    return props.scores.map((score,index) => {
+        // if(props.points === score) {
+        //     return (
+        //         <View key={index}><Text style={{fontSize: 20}}>{index +1}. 
+        //             <Text style={{color: 'red'}}>{score}</Text>
+        //         </Text></View>
+        //     )
+        // }
+       
+        <View key={index}><Text style={{fontSize: 20}}>{index +1}. 
+                <Text style={{color: 'grey'}}>{score}</Text>
+        </Text></View>
+      
+       
+    })
 }
 
 export class P1TopScoreScreen extends Component {
@@ -20,11 +34,9 @@ export class P1TopScoreScreen extends Component {
 
     constructor(props) {
         super(props)
-        this.state = {
-            userHigh: [],
-            overallHigh: []
-        }
     }
+
+    userHigh = [];
 
     handleBackButton=() => {
             ToastAndroid.show('Back Button is not allowed', ToastAndroid.SHORT);
@@ -49,12 +61,15 @@ export class P1TopScoreScreen extends Component {
     }
 
     userHighScores = async() => {
-        const thescores = await LocalHighscore(this.uid, this.game);
+        await this.pointsStoring()
+        const thescores = await LocalHighscore(this.uid, this.thegame);
+        this.userHigh = thescores;
+        console.log(this.userHigh)
+
 
     }
 
     componentDidMount() {
-        this.pointsStoring()
         this.userHighScores()
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
       
@@ -69,7 +84,7 @@ export class P1TopScoreScreen extends Component {
         let points = this.props.navigation.getParam('points')
         let text = 
             <Text style={{fontSize: 30, paddingTop: 50}}>
-                Hi <Text style={{color: 'pink'}}>{thename}</Text>, you got <Text style={{color: 'green'}}>{points}</Text> points!
+                Congratulations, you got <Text style={{color: 'green'}}>{points}</Text> points!
             </Text>
 
         return (
@@ -79,6 +94,10 @@ export class P1TopScoreScreen extends Component {
                 <Button title='Home' onPress={()=> {
                     this.props.navigation.navigate('Home')
                 }}/>
+
+                <View style={{paddingTop: 30}}>
+                    <UserTopScores scores={this.userHigh} points={this.points}/>
+                </View>
             </View>
         )
     }

@@ -3,23 +3,8 @@ import { StyleSheet,UIManager, findNodeHandle, Button , Text, View, TextInput, T
 import styles from './styles'
 import Firebase from '../Server/firebase'  
 import { YellowBox } from 'react-native'; 
-import { DisplayName } from '../Server/firebaseFunc'
 import { Icon } from 'react-native-elements'
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu'
-
-// const SettingButton= props => (
-//     <View style={{flexDirection: 'row'}}>
-
-//         <TouchableOpacity style={{paddingLeft: 180}} onPress={()=>{
-//             props.nav.navigate('Setting');     
-//         }}>
-//             <View style={[styles.button, {width: 120}]}>
-//                 <Text style={styles.buttonText}>SETTINGS</Text>
-//             </View>
-//         </TouchableOpacity>
-
-//     </View>
-// )
 
 const PassChange = props => {
     if(props.success) {
@@ -54,12 +39,9 @@ export default class HomeScreen extends Component {
         >
             <View style={{padding: 10, paddingRight:20, paddingTop: 0}}>
                 <Icon
-                //  raised
-                //  name='cog'
-                name='ellipsis-v'
-                type='font-awesome'
-                //  color='#129793'
-                color='white'
+                    name='ellipsis-v'
+                    type='font-awesome'
+                    color='white'
                 />
              </View>
            </TouchableOpacity>),
@@ -135,7 +117,7 @@ export default class HomeScreen extends Component {
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={()=>{
-                    this.props.navigation.navigate('GameRules', {user: this.props.navigation.getParam('user'), name: this.state.name})
+                    this.props.navigation.navigate('Instruction', {user: this.props.navigation.getParam('user'), name: this.state.name})
                 }}>
                     <View style={styles.button}>
                         <Text style={styles.buttonText}>Game Instructions</Text>
