@@ -11,6 +11,7 @@ import P1TopScoreScreen from './Components/P1TopScoreScreen';
 import ChangePasswordScreen from './Components/ChangePasswordScreen'
 import MultiplayerGameScreen from './Components/MultiplayerGameScreen'
 import SettingsScreen from './Components/SettingsScreen'
+import GameInstructionScreen from './Components/GameInstructionScreen';
 
 const MainNav = createStackNavigator({
   Start: {
@@ -123,7 +124,21 @@ const MainNav = createStackNavigator({
     screen: MultiplayerGameScreen,
   },
 
+  Instruction: {
+    screen: GameInstructionScreen,
+    navigationOptions: {
+      title: 'Game Instructions',
+      headerStyle: {
+        backgroundColor: '#129793',
+      },
+      headerTitleStyle: {
+         color: 'white',
+      },
+      headerTintColor: 'white'
+    }
+  }
 },
+
 {
   // initialRouteName: 'Player2Game'
   initialRouteName: 'Start'
