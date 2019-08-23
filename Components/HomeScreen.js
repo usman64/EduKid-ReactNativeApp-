@@ -39,6 +39,7 @@ export default class HomeScreen extends Component {
         >
             <View style={{padding: 10, paddingRight:20, paddingTop: 0}}>
                 <Icon
+                    // name='cog'
                     name='ellipsis-v'
                     type='font-awesome'
                     color='white'
@@ -79,7 +80,7 @@ export default class HomeScreen extends Component {
     render() {
         let thename =  
             <Text style={styles.welcome}>
-                Hi <Text style={{color: 'green'}}>{this.state.name}</Text>
+                Hi <Text style={{color: 'green',alignSelf:'center'}}>{this.state.name}</Text>
             </Text>
         return (
             <View style = {[mystyles.thecontainer,{paddingTop: 0}]}>
@@ -93,7 +94,7 @@ export default class HomeScreen extends Component {
                 
                 <PassChange success = {this.props.navigation.getParam('success')}
                             duration = {this.props.navigation.getParam('dura')}/>
-                <View>{thename}</View>
+                <View style={{alignSelf:'center'}} >{thename}</View>
                 <View style={{height:20}}/>
 
                 <TouchableOpacity onPress={()=> {
@@ -109,7 +110,12 @@ export default class HomeScreen extends Component {
                 <TouchableOpacity onPress={()=>{
                     this.props.navigation.navigate('Player2Game', {user: this.props.navigation.getParam('user'),
                                                                     name: this.state.name,
-                                                                    time: this.props.navigation.getParam('time')})
+                                                                    time: this.props.navigation.getParam('time'),
+                                                                    game_ColorMatch: this.props.navigation.getParam('game_ColorMatch'),
+                                                                    game_Capitals: this.props.navigation.getParam('game_Capitals'),
+                                                                    game_Homophones: this.props.navigation.getParam('game_Homophones'),
+                                                                    game_Math: this.props.navigation.getParam('game_Math'),
+                                                                })
                 }}>
                     <View style={styles.button}>
                         <Text style={styles.buttonText}>Multi-Player</Text>

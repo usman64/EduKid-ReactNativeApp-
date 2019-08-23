@@ -20,8 +20,6 @@ export const defaultColor = '#129793'
 let P1_hitTime = 0
 let P2_hitTime = 0
 
-
-
 export default class MultiplayerGameScreen extends Component {
 
     static navigationOptions = {
@@ -47,6 +45,28 @@ export default class MultiplayerGameScreen extends Component {
             gameEnded: false,
             showGoBack: false
         }
+    }
+
+    componentWillMount(){
+        this.setState({gameArray: this.mapGameSelectionToArray})
+    }
+
+    mapGameSelectionToArray = () => {
+        let arr = []
+        let {navigation} = this.props
+        if(navigation.getParam('game_ColorMatch')){
+            arr.push(capital)
+        }
+        if(navigation.getParam('game_Capitals')){
+            arr.push(color)
+        }
+        if(navigation.getParam('game_Homophones')){
+            arr.push(homo)
+        }
+        if(navigation.getParam('game_Math')){
+            arr.push(math)
+        }
+        return arr
     }
 
     quitting = () => {

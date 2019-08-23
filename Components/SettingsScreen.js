@@ -11,7 +11,7 @@ const GameDuration = props => (
             props.nav.navigate('Home', {time: 30, dura: true})
         }}>
             <View style={[styles.button,{width: 80, backgroundColor: props.c30 || 'grey',borderColor: 'grey'}]}>
-                <Text style={styles.buttonText}>30 Sec</Text>
+                <Text style={styles.buttonText}>30s</Text>
             </View>
         </TouchableOpacity>
 
@@ -20,7 +20,7 @@ const GameDuration = props => (
                 props.nav.navigate('Home', {time: 60, dura: true})
          }}>
             <View style={[styles.button,{width: 80, backgroundColor: props.c60 || 'red', borderColor: 'grey'}]}>
-                <Text style={styles.buttonText}>60 Sec</Text>
+                <Text style={styles.buttonText}>60s</Text>
             </View>
         </TouchableOpacity>
 
@@ -29,7 +29,7 @@ const GameDuration = props => (
             props.nav.navigate('Home', {time: 90, dura: true})
          }}>
             <View style={[styles.button,{width: 80, backgroundColor: props.c90 || 'grey' ,borderColor: 'grey'}]}>
-                <Text style={styles.buttonText}>90 Sec</Text>
+                <Text style={styles.buttonText}>90s</Text>
             </View>
         </TouchableOpacity>
 
@@ -38,7 +38,7 @@ const GameDuration = props => (
             props.nav.navigate('Home', {time: 120, dura: true})
          }}>
             <View style={[styles.button,{width: 80, backgroundColor: props.c120 || 'grey',borderColor: 'grey'}]}>
-                <Text style={styles.buttonText}>120 Sec</Text>
+                <Text style={styles.buttonText}>120s</Text>
             </View>
         </TouchableOpacity>
     </View>    
@@ -49,7 +49,13 @@ let state = {
     color30: '',
     color60: '',
     color90: '',
-    color120: ''
+    color120: '',
+
+    showGameSelection: false,
+    game_ColorMatch: false,
+    game_Math: false,
+    game_Homophones: false,
+    game_Capitals: false,
 };
 
 export class SettingsScreen extends Component {
@@ -89,10 +95,10 @@ export class SettingsScreen extends Component {
         return (
             <View style = {styles.container}>
                 <Icon
-                //  raised
+                 raised
                 name='cog'
                 type='font-awesome'
-                size={55}
+                size={45}
                 //  color='#129793'
                 color='#ddd'
                 />

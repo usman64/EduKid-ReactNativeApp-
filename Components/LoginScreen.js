@@ -32,7 +32,11 @@ const Status = props => {
 }
 
 
-export default class LoginScreen extends Component {   
+export default class LoginScreen extends Component {
+    static navigationOptions = ({navigation}) => ({
+        headerLeft: (<HeaderBackButton style={{color:'white'}} onPress={()=> navigation.navigate('Start')}/>),
+        headerTintColor: 'white'
+    })   
 
     constructor(props) {
         super(props);
