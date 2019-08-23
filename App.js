@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View } from 'react-native';
-import {createAppContainer, createStackNavigator} from 'react-navigation'
+import {createAppContainer, createStackNavigator, createMaterialTopTabNavigator} from 'react-navigation'
 import LoginScreen from './Components/LoginScreen'
 import SignUpScreen from './Components/SignUpScreen'
 import HomeScreen from './Components/HomeScreen'
@@ -12,6 +12,22 @@ import ChangePasswordScreen from './Components/ChangePasswordScreen'
 import MultiplayerGameScreen from './Components/MultiplayerGameScreen'
 import SettingsScreen from './Components/SettingsScreen'
 import GameInstructionScreen from './Components/GameInstructionScreen';
+import P1GlobalScoreScreen from './Components/P1GlobalScoreScreen'
+
+ScoreTabs = createMaterialTopTabNavigator({
+  User: P1TopScoreScreen,
+  Global: P1GlobalScoreScreen,
+},
+{
+  initialRouteName: 'User', 
+  tabBarPosition: 'bottom',
+  tabBarOptions: {
+    style: {
+      backgroundColor: '#129793'
+    }
+  }
+}
+)
 
 const MainNav = createStackNavigator({
   Start: {
@@ -107,16 +123,21 @@ const MainNav = createStackNavigator({
 
   Player1Game: {
     screen: P1GameScreen,
-    navigationOptions : {
-      headerLeft: (<View></View>)
-    }
+    
   },
 
   Player1Score: {
-    screen: P1TopScoreScreen,
+    screen: ScoreTabs,
     navigationOptions : {
-      headerLeft: (<View></View>)
-    }
+        headerStyle: {
+          backgroundColor: '#129793',
+        },
+        headerTitleStyle: {
+          color: 'white',
+        },
+        headerTintColor: 'white',
+        headerLeft: null
+      }
 
   },
 
