@@ -34,6 +34,10 @@ const Status = props => {
 
 export default class LoginScreen extends Component {   
 
+    static navigationOptions = ({navigation}) => ({
+        headerLeft: <HeaderBackButton tintColor={'white'} onPress={() => navigation.navigate('Start')} />,
+    })
+
     constructor(props) {
         super(props);
         this.state = {

@@ -13,13 +13,13 @@ const Countdown = props => (
 const PointsTime= props => (
     <View style={{flexDirection: 'row', paddingTop: -250, paddingBottom: 50}}>
         <View style={{paddingRight: 100}}>
-            <Text style={{fontSize: 20}}>Points</Text>
-            <Text style={{fontSize: 20}}>{props.points}</Text>
+            <Text style={{fontSize: 20, color: '#129793', fontWeight: 'bold'}}>Points</Text>
+            <Text style={{fontSize: 20, color: '#129793', fontWeight: 'bold'}}>{props.points}</Text>
         </View>
 
         <View style={{paddingLeft: 100}}>
-            <Text style={{fontSize: 20}}>Time</Text>
-            <Text style={{fontSize: 20}}>{props.time}</Text>
+            <Text style={{fontSize: 20,color: '#129793',fontWeight: 'bold'}}>Time</Text>
+            <Text style={{fontSize: 20,color: '#129793',fontWeight: 'bold'}}>{props.time}</Text>
         </View>
     </View>
 )
@@ -115,7 +115,7 @@ export default class P1GameScreen extends Component {
             this.setState({game: color, gameTitle: 'Color Match', question: 'Does the word matches the color'})
             let random = Math.round(Math.random() * (color.length-1))
             let myquestion = 
-                <Text style={{fontSize: 30, color: color[random].color, fontWeight: 'bold'}}>{color[random].name}</Text>
+                <Text style={{fontSize: 60, color: color[random].color, fontWeight: 'bold'}}>{color[random].name}</Text>
             let answer = color[random].answer
             this.setState({currentQ: myquestion, currentA: answer})
         }
@@ -159,16 +159,16 @@ export default class P1GameScreen extends Component {
         this.interval=setInterval(()=> this.decrementCount(),1000)
         this.thetimer=setInterval(()=>this.decrementTime(), 1000)
 
-        if(this._ismounted) {
-            BackHandler.addEventListener('hardwareBackPress', this.handleBackButton)
-        }
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton)
+        // if(this._ismounted) {
+        // }
     }
 
     componentWillUnmount() {
         clearInterval(this.interval)
         clearInterval(this.thetimer)
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-        this._ismounted = false
+        // this._ismounted = false
     }
 
     decrementTime = () => {
@@ -180,7 +180,8 @@ export default class P1GameScreen extends Component {
             this.setState(prevState => ({timeRemain: prevState.timeRemain - 1}))
             if(this.state.timeRemain < 1) {
                 this.setState({timeRemain: null})
-                this.props.navigation.navigate('Player1Score', {user: myuser, name: myname, game: thegame, points: this.state.points})
+                this.props.navigation.navigate('Player1Score', {user: myuser, name: myname, game: thegame, points: this.state.points, 
+                                                    time: this.props.navigation.getParam('time')})
             }
         }
     }
@@ -192,17 +193,28 @@ export default class P1GameScreen extends Component {
         }
     }
 
-    checkAnswer(decision, button) {
+    checkAnswer = (decision, button) => {
+
+        let myuser = this.props.navigation.getParam('user')
+        let myname = this.props.navigation.getParam('name')
+        let thegame = this.props.navigation.getParam('game');
+
+        if(this.state.timeRemain < 1) {
+            this.setState({timeRemain: null})
+            this.props.navigation.navigate('Player1Score', {user: myuser, name: myname, game: thegame, points: this.state.points,
+                                                            time: this.props.navigation.getParam('time')})
+        }
+
         if(this.state.currentA === decision) {
             this.setState(prevState => ({points: prevState.points + 1}))
             if(button === 'button1') {
                 this.setState({thecolor1: 'green', sendRemarks: 1})
-                setTimeout(()=> this.setState({thecolor1: 'grey', sendRemarks: 0}), 200)
+                setTimeout(()=> this.setState({thecolor1: 'grey', sendRemarks: 0}), 300)
             }
 
             else {
                 this.setState({thecolor2: 'green',sendRemarks: 1})
-                setTimeout(()=> this.setState({thecolor2: 'grey', sendRemarks: 0}), 200)
+                setTimeout(()=> this.setState({thecolor2: 'grey', sendRemarks: 0}), 300)
             }
         }
 
@@ -210,16 +222,15 @@ export default class P1GameScreen extends Component {
             this.setState(prevState => ({points: prevState.points - 1}))
             if(button === 'button1') {
                 this.setState({thecolor1: 'red', sendRemarks: -1})
-                setTimeout(()=> this.setState({thecolor1: 'grey',sendRemarks: 0}), 200)
+                setTimeout(()=> this.setState({thecolor1: 'grey',sendRemarks: 0}), 300)
             }
 
             else {
                 this.setState({thecolor2: 'red',sendRemarks: -1})
-                setTimeout(()=> this.setState({thecolor2: 'grey',sendRemarks: 0}), 200)
+                setTimeout(()=> this.setState({thecolor2: 'grey',sendRemarks: 0}), 300)
             }
         }
 
-        let thegame = this.props.navigation.getParam('game');
 
         if(thegame === 'homo') {
             let random = Math.round(Math.random() * (homo.length-1))
@@ -253,7 +264,7 @@ export default class P1GameScreen extends Component {
         else if(thegame === 'color') {
             let random = Math.round(Math.random() * (color.length-1))
             let myquestion = 
-                <Text style={{fontSize: 30, color: color[random].color, fontWeight: 'bold'}}>{color[random].name}</Text>
+                <Text style={{fontSize: 60, color: color[random].color, fontWeight: 'bold'}}>{color[random].name}</Text>
             let answer = color[random].answer
             this.setState({currentQ: myquestion, currentA: answer})
         }
@@ -263,8 +274,9 @@ export default class P1GameScreen extends Component {
     render() {
         if(this.state.showCountDown) {
             return (
-            <View style={styles.container}>
-               <Text style={[styles.welcome, {fontSize: 30, letterSpacing: 1}]}>{this.state.gameTitle}</Text>
+            <View style={[styles.container,{paddingTop: 30}]}>
+                <PointsTime points={this.state.points} time={this.state.timeRemain}/>
+               <Text style={[styles.welcome, {fontSize: 40, letterSpacing: 1,color: 'black',fontWeight: 'bold'}]}>{this.state.gameTitle}</Text>
                      <View style={{height:10}}/>
                     <Text style={{fontSize: 20}}>{this.state.question}</Text>
                     <View style={{height:30}}/>
@@ -281,7 +293,7 @@ export default class P1GameScreen extends Component {
             return (
                 <View style={[styles.container,{paddingTop: 30}]}>
                     <PointsTime points={this.state.points} time={this.state.timeRemain}/>
-                    <Text style={[styles.welcome, {fontSize: 40, letterSpacing: 1, color:'black'}]}>{this.state.gameTitle}</Text>
+                    <Text style={[styles.welcome, {fontSize: 40, letterSpacing: 1, color:'black',fontWeight: 'bold'}]}>{this.state.gameTitle}</Text>
                      <View style={{height:10}}/>
                     <Text style={{fontSize: 20}}>{this.state.question}</Text>
                     <View style={{height:30}}/>
@@ -332,7 +344,7 @@ const mystyle = new StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems:"center",
-        paddingTop: 100,
+        paddingTop: 80,
     },
 
     mybutton: {
