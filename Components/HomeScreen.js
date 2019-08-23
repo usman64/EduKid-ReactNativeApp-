@@ -32,6 +32,8 @@ const PassChange = props => {
 }
 
 
+
+
 export default class HomeScreen extends Component {
     static navigationOptions = ({navigation}) => ({
         headerRight: (<TouchableOpacity
@@ -94,9 +96,10 @@ export default class HomeScreen extends Component {
                 
                 <PassChange success = {this.props.navigation.getParam('success')}
                             duration = {this.props.navigation.getParam('dura')}/>
-                <View style={{alignSelf:'center'}} >{thename}</View>
+                <View style={{alignSelf:'center'}} >
+                {thename}
+                </View>
                 <View style={{height:20}}/>
-
                 <TouchableOpacity onPress={()=> {
                         this.props.navigation.navigate('Player1', {user: this.props.navigation.getParam('user'), 
                                                                    name: this.state.name,
@@ -108,7 +111,7 @@ export default class HomeScreen extends Component {
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={()=>{
-                    this.props.navigation.navigate('Player2Game', {user: this.props.navigation.getParam('user'),
+                    this.props.navigation.navigate('Player2Game', { user: this.props.navigation.getParam('user'),
                                                                     name: this.state.name,
                                                                     time: this.props.navigation.getParam('time'),
                                                                     game_ColorMatch: this.props.navigation.getParam('game_ColorMatch'),

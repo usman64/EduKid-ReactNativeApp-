@@ -3,6 +3,11 @@ import { StyleSheet, Button , Text, View, TextInput, TouchableOpacity, Image, Al
 import styles from './styles'
 import { Logout } from '../Server/firebaseFunc'
 import { Icon } from 'react-native-elements'
+import MultipleChoice from 'rn-multiple-choice'
+// import SelectMultiple from 'react-native-select-multiple'
+import Dialog, {ScaleAnimation ,DialogContent,DialogButton,DialogFooter } from 'react-native-popup-dialog';
+
+
 
 const GameDuration = props => (
     <View style={{flexDirection: 'row'}}>
@@ -52,10 +57,11 @@ let state = {
     color120: '',
 
     showGameSelection: false,
-    game_ColorMatch: false,
-    game_Math: false,
-    game_Homophones: false,
-    game_Capitals: false,
+    game_ColorMatch: true,
+    game_Math: true,
+    game_Homophones: true,
+    game_Capitals: true,
+    gameArray: ['Country Capitals','Homophones','Equations','Color Match']
 };
 
 export class SettingsScreen extends Component {
@@ -87,6 +93,36 @@ export class SettingsScreen extends Component {
         }
 
         this.setState(prevState => ({showDuration: prevState.showDuration ? false: true}))
+    }
+
+    gameSelection = (option) => {
+        let Allgames = ['Country Capitals','Homophones','Equations','Color Match']
+        
+            switch(option){
+                case 'Country Capitals':
+                    this.setState(prevState => ({game_Capitals:!prevState.game_Capitals}))
+                    break
+                case 'Homophones':
+                    this.setState(prevState => ({game_Homophones:!prevState.game_Homophones}))
+                    break
+                case 'Equations':
+
+                    this.setState(prevState => ({game_Math:!prevState.game_Math}))
+                    break
+                case 'Color Match':
+
+                    this.setState(prevState => ({game_ColorMatch:!prevState.game_ColorMatch}))
+                    break
+                default:
+                    throw new Error(option)
+            }
+
+            if(!this.state.gameArray.includes(option)){
+            console.log('remove',this.state.gameArray)
+            this.setState(prevState=>({gameArray:prevState.gameArray.filter(game => game !== option)}))
+        }else{
+            this.setState(prevState=>({gameArray:[...prevState.gameArray]}))
+        }
     }
 
     render() {
@@ -125,13 +161,65 @@ export class SettingsScreen extends Component {
 
                 }
 
-                <TouchableOpacity onPress={()=> {
-                    Alert.alert('Ye Usman Karega!')
-                }}>
+                <TouchableOpacity onPress={()=> this.setState({showGameSelection:true})}>
                     <View style={styles.button}>
                         <Text style={styles.buttonText}>Game Selection (Multiplayer)</Text>
                     </View>
                 </TouchableOpacity>
+
+                <Dialog
+                    visible={this.state.showGameSelection}
+                    // onTouchOutside={() => {
+                    //     this.setState({ showGameSelection: false });
+                    //   }}
+                    dialogAnimation={new ScaleAnimation({
+                        initialValue: 0, // optional
+                        useNativeDriver: true, // optional
+                      })}
+                      footer={
+                        <DialogFooter>
+                          <DialogButton
+                            text="OK"
+                            onPress={() => {
+                                let {navigation} = this.props
+                                this.setState({ showGameSelection:false},() =>
+                                navigation.navigate('Home',{
+                                    game_ColorMatch: this.state.game_ColorMatch,
+                                    game_Math: this.state.game_Math,
+                                    game_Homophones: this.state.game_Homophones,
+                                    game_Capitals: this.state.game_Capitals,
+                                }))}}
+                                
+
+                                // this.setState({ showGameSelection:false},() =>
+                            //     this.props.navigation.navigate('Home',{
+                            //     game_ColorMatch: this.state.game_ColorMatch,
+                            //     game_Math: this.state.game_Math,
+                            //     game_Homophones: this.state.game_Homophones,
+                            //     game_Capitals: this.state.game_Capitals,
+                            // })}}
+                          />
+                        </DialogFooter>
+                      }
+                >
+                    <DialogContent style={{height:180}}>
+                   <View style={{padding:15}}>
+                    <MultipleChoice
+                        style={{width:260, height:350}}
+                        options={[
+                        'Country Capitals',
+                        'Homophones',
+                        'Equations',
+                        'Color Match'
+                        ]}
+                        selectedOptions={this.state.gameArray}
+                        maxSelectedOptions={4}
+                        onSelection={(option)=> this.gameSelection(option)}
+                    />
+                    </View>  
+                    </DialogContent>
+                
+                </Dialog>
 
                 <TouchableOpacity onPress={()=> {
                     this.props.navigation.navigate('ChangePass')

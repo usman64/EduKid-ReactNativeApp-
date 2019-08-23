@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { StyleSheet, Button , Text, View, TextInput, TouchableOpacity, Image, Alert} from 'react-native';
 import styles from './styles'
 
-export class GameInstructionScreen extends Component {
+class GameInstructionScreen extends Component {
     name = this.props.navigation.getParam('name').split(" ")[0]
     render() {
         return (
@@ -12,13 +12,13 @@ export class GameInstructionScreen extends Component {
             //        Instructions
             //    </Text> */}
 
-                <View style={{paddingTop: 0},{margin: 30}}>
+                <View style={{paddingTop: 0, margin: 30}}>
                     {/* <Text>Dear <Text style={{color: 'green'}}>{this.name}</Text>, {'\n'}Welcome to Edukid, a place to learn,
                     a place for fun.{'\n'}{'\n'} </Text> */}
 
-<Text style={[{textAlign:'center'},{color: 'green'},{fontSize: 25}]}>
-Single Player{"\n"}
-</Text>
+        <Text style={[{textAlign:'center'},{color: 'green'},{fontSize: 25}]}>
+        Single Player{"\n"}
+        </Text>
 
 <Text>
 The objective of the game is to score as many points as possible by giving more 
@@ -28,7 +28,7 @@ if you disagree with it.{"\n"}
 {"\n"}
 </Text>
 
-<Text style={[{textAlign:'center'},{color: 'green'},{fontSize: 25}]}>
+<Text style={[{textAlign:'center',color: 'green',fontSize: 25}]}>
 Multi-player{"\n"}
 </Text>
 
@@ -37,7 +37,7 @@ Two human players compete against each other, the objective is to get more point
 {"\n"}
 </Text>
 
-<Text style={[{textAlign:'center'},{color: 'green'},{fontSize: 25}]}>
+<Text style={[{textAlign:'center',color: 'green',fontSize: 25}]}>
 Scoring{"\n"}
 </Text>
 

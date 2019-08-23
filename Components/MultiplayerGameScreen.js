@@ -33,7 +33,7 @@ export default class MultiplayerGameScreen extends Component {
             showCountDown: true,
             player1_status: defaultColor,
             player2_status: defaultColor,
-            gameArray: [capital, color, homo, math],
+            gameArray: [],
             currentGame: [],
             question: '',
             currentQ:'',
@@ -48,17 +48,18 @@ export default class MultiplayerGameScreen extends Component {
     }
 
     componentWillMount(){
-        this.setState({gameArray: this.mapGameSelectionToArray})
+        this.setState({gameArray: this.mapGameSelectionToArray()})
     }
 
     mapGameSelectionToArray = () => {
         let arr = []
         let {navigation} = this.props
         if(navigation.getParam('game_ColorMatch')){
-            arr.push(capital)
+            // console.log("Here")
+            arr.push(color)
         }
         if(navigation.getParam('game_Capitals')){
-            arr.push(color)
+            arr.push(capital)
         }
         if(navigation.getParam('game_Homophones')){
             arr.push(homo)
