@@ -38,6 +38,10 @@ export default class LoginScreen extends Component {
         headerTintColor: 'white'
     })   
 
+    static navigationOptions = ({navigation}) => ({
+        headerLeft: <HeaderBackButton tintColor={'white'} onPress={() => navigation.navigate('Start')} />,
+    })
+
     constructor(props) {
         super(props);
         this.state = {
