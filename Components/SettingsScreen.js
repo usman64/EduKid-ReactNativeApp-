@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Button , Text, View, TextInput, TouchableOpacity, Image, Alert, BackHandler} from 'react-native';
+import { StyleSheet, Button ,ScrollView, Text, View, TextInput, TouchableOpacity, Image, Alert, BackHandler} from 'react-native';
 import styles from './styles'
 import { Logout } from '../Server/firebaseFunc'
 import { Icon } from 'react-native-elements'
@@ -134,6 +134,8 @@ export class SettingsScreen extends Component {
 
 
         return (
+            <ScrollView>
+
             <View style = {styles.container}>
                 <Icon
                  raised
@@ -245,6 +247,7 @@ export class SettingsScreen extends Component {
                 </TouchableOpacity>
 
             </View>
+            </ScrollView>
         )
     }
 }

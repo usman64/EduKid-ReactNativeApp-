@@ -27,27 +27,7 @@ const UserTopScores = props => {
     })
 }
 
-const TwoButtons = props => (
-    <View style={{paddingTop: 70, flexDirection: 'row', justifyContent: 'space-between'}}>
-            <TouchableHighlight onPress ={()=> {
-                props.navigation.navigate('Player1')
-            }}>
-                <View style={[styles.button,{width: 100,backgroundColor: 'grey'}]}>
-                    <Text style={styles.buttonText}>Another Game ?</Text>
-                </View>
-            </TouchableHighlight>
-        
-            <TouchableHighlight onPress={()=> {
-                props.navigation.navigate('Home')
-            }}>
-                <View style={[styles.button,{width: 100, backgroundColor: 'grey'}]}>
-                    <Text style={styles.buttonText}>Home</Text>
-                </View>
-            </TouchableHighlight>
-    </View>
-)
-
-export class P1TopScoreScreen extends Component {
+export default class P1TopScoreScreen extends Component {
 
     thegame = this.props.navigation.getParam('game')
     uid = Firebase.auth().currentUser.uid
@@ -117,7 +97,7 @@ export class P1TopScoreScreen extends Component {
             </Text>
 
         return (
-            <View style = {styles.container}>
+            <View style = {[styles.container, {paddingTop: 30}]}>
                 <Text style = {styles.welcome}>Top Score Screen</Text>
                 <View>{text}</View>
 
@@ -125,13 +105,60 @@ export class P1TopScoreScreen extends Component {
                     <UserTopScores scores={this.state.userHigh} points={this.state.points}/>
                 </View>
 
-                <TwoButtons navigation={this.props.navigation}
-                            game={this.thegame}
-                            name={this.name}
-                            time={this.time}/>
+                <View style={[mystyle.buttons]}>
+                    <TouchableOpacity onPress={()=> {
+                        this.props.navigation.navigate('Player1')
+                        
+                    }}>
+                        <View style={[mystyle.mybutton, {backgroundColor: 'grey'}]}>
+                            <Text style={styles.buttonText}>ANOTHER GAME?</Text>
+                        </View>
+                    </TouchableOpacity>
+
+                    <View style={{paddingLeft: 20}}></View>
+
+                    <TouchableOpacity onPress={()=> {
+                        this.props.navigation.navigate('Home')
+                    }}>
+                        <View style={[mystyle.mybutton, {backgroundColor: 'grey'}]}>
+                            <Text style={styles.buttonText}>HOME</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+
+        
             </View>
         )
     }
 }
 
-export default P1TopScoreScreen
+
+const mystyle = new StyleSheet.create({
+    buttons : {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems:"center",
+        paddingTop: 140,
+    },
+
+    mybutton: {
+        width: 180,
+        borderColor: 'grey',
+        borderWidth: 1,
+        height:100,
+        padding:10,
+        borderRadius:12,
+        marginTop:20,
+        backgroundColor:'grey',
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: 'silver',
+        shadowOffset: {
+          width: 0,
+          height: 4
+        },
+        shadowRadius: 5,
+        shadowOpacity: 0.8
+    },
+})

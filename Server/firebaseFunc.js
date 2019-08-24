@@ -84,12 +84,10 @@ export const  LocalHighscore = async(user,game)=> {
 
 export const GlobalHighscore= async(game)=> {
     let scoreArray = []
-    let snapshot = await Firebase.database().ref('/game/'+`${game}`).orderByChild('score').limitToLast(5).once('value')
-    console.log(snapshot)
+    let snapshot = await Firebase.database().ref('/game/'+`${game}`).orderByChild('score').limitToLast(10).once('value')
     snapshot.forEach(temp => {
         scoreArray.push(temp.val())    
     })
     scoreArray.reverse()
-    console.log(scoreArray);
     return scoreArray;
   }
