@@ -1,9 +1,18 @@
 
 import React, { Component } from 'react'
-import { StyleSheet, Button , Text, View, TextInput, TouchableOpacity, Image, Alert} from 'react-native';
+import { StyleSheet,BackHandler, Button , Text, View, TextInput, TouchableOpacity, Image, Alert} from 'react-native';
 import styles from './styles'
 
 class GameInstructionScreen extends Component {
+
+    componentDidUpdate(){
+        BackHandler.addEventListener('hardwareBackPress', ()=> this.props.navigation.navigate('Home'))
+    }
+
+    componentWillUnmount(){
+        BackHandler.removeEventListener('hardwareBackPress');
+    }
+
     name = this.props.navigation.getParam('name').split(" ")[0]
     render() {
         return (
