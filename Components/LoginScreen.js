@@ -4,6 +4,7 @@ import styles from './styles'
 import { HeaderBackButton } from 'react-navigation';
 import { Login, ForgotPassword } from '../Server/firebaseFunc'
 import Prompt from 'react-native-prompt-crossplatform';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
 const Status = props => {
@@ -129,87 +130,89 @@ export default class LoginScreen extends Component {
    
     render() {
         return (
-            <KeyboardAvoidingView style={[styles.container, {paddingTop: 10}]} behavior="padding" enabled>
+            <KeyboardAwareScrollView enableOnAndroid extraScrollHeight={50}>
+                <View style={[styles.container, {paddingTop: 10}]}>
 
-                <Prompt
-                    title="Enter your email"
-                    inputPlaceholder='email'
-                    isVisible={this.state.prompt}
-                    primaryColor= 'green'
-                    onChangeText={(text) => {
-                        this.change(text)
-                    }}
-                    onCancel={() => {
-                        this.cancel()
-                    }}
-                    onSubmit={() => {
-                        this.submit()
-                    }}
-                    onBackButtonPress = {() => {
-                        this.setState({prompt:false})
-                    }}
-                />
-
-                <Image 
-                    style={{height: 180, width: 180}}
-                    source={require('../assets/images.png')}
-                />
-
-
-                <View style={styles.emailContainer}>
-                    <TextInput 
-                        style={styles.textInput} 
-                        placeholder="Email"
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                        onChangeText={email=> {
-                            this.setState({email})
-                        }}/>
-
-                </View>
-
-                <View style={[styles.passwordContainer,{marginTop: 20}]}>
-                    <TextInput 
-                        style={styles.textInput} 
-                        placeholder="Password"
-                        secureTextEntry={true}
-                        onChangeText={password=> {
-                            this.setState({password})
+                    <Prompt
+                        title="Enter your email"
+                        inputPlaceholder='email'
+                        isVisible={this.state.prompt}
+                        primaryColor= 'green'
+                        onChangeText={(text) => {
+                            this.change(text)
+                        }}
+                        onCancel={() => {
+                            this.cancel()
+                        }}
+                        onSubmit={() => {
+                            this.submit()
+                        }}
+                        onBackButtonPress = {() => {
+                            this.setState({prompt:false})
                         }}
                     />
-                </View>
-            
-                <TouchableOpacity onPress = {() => {
-                    this.setState({prompt: true})
-                }}>
-                    <View style={styles.forgotPassword}>
-                        <Text style={styles.forgotText}>Forgot password?</Text>
-                    </View>
-                </TouchableOpacity>
-        
-                <TouchableOpacity onPress={()=> this.loginUser()}>
-                    <View style={styles.button}>
-                        <Text style={styles.buttonText}>LOG IN</Text>
-                    </View>
-                </TouchableOpacity>
 
-                <Status signup={this.props.navigation.getParam('signup')}
-                        logout={this.props.navigation.getParam('logout')} />    
+                    <Image 
+                        style={{height: 180, width: 180}}
+                        source={require('../assets/images.png')}
+                    />
 
-                <View style={{paddingTop: 100}}>
-                    <View style={styles.normalContainer}>
-                        <Text style={styles.normalText}>Do not have account?</Text>
+
+                    <View style={styles.emailContainer}>
+                        <TextInput 
+                            style={styles.textInput} 
+                            placeholder="Email"
+                            keyboardType="email-address"
+                            autoCapitalize="none"
+                            onChangeText={email=> {
+                                this.setState({email})
+                            }}/>
+
                     </View>
-                    <TouchableOpacity onPress={()=> {
-                        this.props.navigation.navigate('Signup')
+
+                    <View style={[styles.passwordContainer,{marginTop: 20}]}>
+                        <TextInput 
+                            style={styles.textInput} 
+                            placeholder="Password"
+                            secureTextEntry={true}
+                            onChangeText={password=> {
+                                this.setState({password})
+                            }}
+                        />
+                    </View>
+                
+                    <TouchableOpacity onPress = {() => {
+                        this.setState({prompt: true})
                     }}>
-                        <View style={styles.createAccount}>
-                            <Text style={styles.createText}>Create new account</Text>
+                        <View style={styles.forgotPassword}>
+                            <Text style={styles.forgotText}>Forgot password?</Text>
                         </View>
                     </TouchableOpacity>
-                </View>
+            
+                    <TouchableOpacity onPress={()=> this.loginUser()}>
+                        <View style={styles.button}>
+                            <Text style={styles.buttonText}>LOG IN</Text>
+                        </View>
+                    </TouchableOpacity>
 
-            </KeyboardAvoidingView>
+                    <Status signup={this.props.navigation.getParam('signup')}
+                            logout={this.props.navigation.getParam('logout')} />    
+
+                    <View style={{paddingTop: 100}}>
+                        <View style={styles.normalContainer}>
+                            <Text style={styles.normalText}>Do not have account?</Text>
+                        </View>
+                        <TouchableOpacity onPress={()=> {
+                            this.props.navigation.navigate('Signup')
+                        }}>
+                            <View style={styles.createAccount}>
+                                <Text style={styles.createText}>Create new account</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+
+                </View>
+            </KeyboardAwareScrollView>    
 
         ) 
     }
