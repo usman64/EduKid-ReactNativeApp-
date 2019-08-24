@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Button , Text, View, TextInput, TouchableOpacity, Image, Alert} from 'react-native';
+import { StyleSheet, Button , Text, View, TextInput, TouchableOpacity, Image, Alert, BackHandler} from 'react-native';
 import styles from './styles'
 import { Logout } from '../Server/firebaseFunc'
 import { Icon } from 'react-native-elements'
@@ -71,7 +71,12 @@ export class SettingsScreen extends Component {
         
     }
 
+    componentDidMount(){
+        BackHandler.addEventListener('hardwareBackPress',() => this.setState({showGameSelection:false}))
+    }
+
     componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', () => this.setState({showGameSelection:false}));
         state = this.state;
     }
 
@@ -169,9 +174,9 @@ export class SettingsScreen extends Component {
 
                 <Dialog
                     visible={this.state.showGameSelection}
-                    // onTouchOutside={() => {
-                    //     this.setState({ showGameSelection: false });
-                    //   }}
+                    onTouchOutside={() => {
+                        this.setState({ showGameSelection: false });
+                      }}
                     dialogAnimation={new ScaleAnimation({
                         initialValue: 0, // optional
                         useNativeDriver: true, // optional

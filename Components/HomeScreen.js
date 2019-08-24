@@ -96,9 +96,7 @@ export default class HomeScreen extends Component {
                 
                 <PassChange success = {this.props.navigation.getParam('success')}
                             duration = {this.props.navigation.getParam('dura')}/>
-                <View style={{alignSelf:'center'}} >
-                {thename}
-                </View>
+                <View style={{alignSelf:'center'}} >{thename}</View>
                 <View style={{height:20}}/>
                 <TouchableOpacity onPress={()=> {
                         this.props.navigation.navigate('Player1', {user: this.props.navigation.getParam('user'), 
