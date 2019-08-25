@@ -35,7 +35,7 @@ export class StartScreen extends Component {
     }
 
     componentDidMount() {
-        this.checkIfLoggedIn()
+        // this.checkIfLoggedIn()
     }
 
     loginWithFacebook = async() => {

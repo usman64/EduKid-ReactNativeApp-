@@ -5,12 +5,12 @@ import styles from './styles'
 
 class GameInstructionScreen extends Component {
 
-    componentDidUpdate(){
+    componentDidMount(){
         BackHandler.addEventListener('hardwareBackPress', ()=> this.props.navigation.navigate('Home'))
     }
 
     componentWillUnmount(){
-        BackHandler.removeEventListener('hardwareBackPress');
+        BackHandler.removeEventListener('hardwareBackPress',()=> this.props.navigation.navigate('Home'));
     }
 
     name = this.props.navigation.getParam('name').split(" ")[0]

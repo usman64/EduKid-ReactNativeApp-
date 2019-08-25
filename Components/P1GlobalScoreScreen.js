@@ -61,7 +61,8 @@ export default  class P1GlobalScoreScreen extends Component {
     }
 
     globalHighScore = async() => {
-        const global = await GlobalHighscore(this.thegame);
+        let thestring=this.thegame + this.time
+        const global = await GlobalHighscore(thestring);
         this.setState({global: global})
     }
 
@@ -87,7 +88,7 @@ export default  class P1GlobalScoreScreen extends Component {
     render() {
         
         return (
-            <View>
+            <View style={styles.container}>
                 <Text style={styles.welcome}>Global screen</Text>
                 <Text style={{fontSize: 30}}>Here are the Top 10 best scores!</Text>
 
