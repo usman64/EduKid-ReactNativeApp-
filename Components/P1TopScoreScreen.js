@@ -53,8 +53,9 @@ export default class P1TopScoreScreen extends Component {
     pointsStoring = async() => {
         let thepoints = this.props.navigation.getParam('points')
         this.setState({points: thepoints})
+        let thestring = this.thegame + this.time
         try {
-            let decision = await UpdateDatabaseWithScore(this.uid, this.thegame, thepoints);
+            let decision = await UpdateDatabaseWithScore(this.uid, thestring, thepoints);
             if(decision) {
                 console.log('Points Stored')
             }
@@ -71,7 +72,8 @@ export default class P1TopScoreScreen extends Component {
 
     userHighScores = async() => {
         await this.pointsStoring()
-        const thescores = await LocalHighscore(this.uid, this.thegame);
+        let thestring = this.thegame + this.time
+        const thescores = await LocalHighscore(this.uid, thestring);
         this.setState({userHigh: thescores})
         if(thescores[0] === this.state.points) {
             Alert.alert('Congrats! Best Score')

@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { StyleSheet,UIManager, findNodeHandle, Button , Text, View, TextInput, TouchableOpacity,Alert, Image,Picker } from 'react-native';
+import { StyleSheet,UIManager, findNodeHandle, Button , Text, View, TextInput,BackHandler, TouchableOpacity,Alert, Image,Picker } from 'react-native';
 import styles from './styles'
-import Firebase from '../Server/firebase'  
+import Firebase from '../Server/firebase' 
+import { Logout } from '../Server/firebaseFunc' 
 import { YellowBox } from 'react-native'; 
 import { Icon } from 'react-native-elements'
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu'
@@ -59,9 +60,40 @@ export default class HomeScreen extends Component {
         YellowBox.ignoreWarnings(['Setting a timer']);
     }
 
-    componentDidMount() {
-        this.readFromDb();
+    handleBackButton = () => {
+        Alert.alert(
+            'Exit',
+            'Do you want to logout?', [{
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel'
+            }, {
+                text: 'OK',
+                onPress: () => {
+                    console.log('shit')
+                    Logout().then(()=> {
+                        this.props.navigation.navigate('Login', {logout: true});
+                        // return true
+                    })
+                }
+            }, ], {
+                cancelable: false
+            }
+        )
+
+        return true;
     }
+
+    componentWillMount() {
+        this.readFromDb();
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+    }
+
+   
 
     readFromDb = () => {
         const theuser = this.props.navigation.getParam('user');
