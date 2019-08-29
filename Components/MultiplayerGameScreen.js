@@ -20,6 +20,9 @@ export const defaultColor = '#129793'
 let P1_hitTime = 0
 let P2_hitTime = 0
 
+let touchQuestionDelay = 2000
+let gameSelectionStartIntervaltime = 0
+
 
 let state = {
     count: 3,
@@ -216,7 +219,8 @@ export default class MultiplayerGameScreen extends Component {
 
         console.log(this.props.navigation.getParam('time'))
         this.interval=setInterval(()=> this.decrementCount(),1000)
-        this.gameinterval=setInterval(()=> {
+        this.gameinterval = setInterval(()=> {
+            gameSelectionStartIntervaltime = this.getCurrentTime()
             this.gameSelection()
             this.resetTimes()
         }
@@ -253,17 +257,23 @@ export default class MultiplayerGameScreen extends Component {
         //   this.props.navigation.dispatch(resetAction);
     }
 
+    getTimeLeft = () => {
+        touchQuestionDelay = (this.getCurrentTime() - gameSelectionStartIntervaltime - 3000)*-1
+        console.log(touchQuestionDelay)
+    }
+
 
     myPress1 = () => {
         if(this.state.player2_status === defaultColor && this.state.player1_status === defaultColor && !this.state.gameEnded && this._ismounted)
         {
+            this.getTimeLeft()
             if(this.state.currentA)
                 {
-                    this.setState({player1_status: win}, () =>  setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:this.incrementScore(prevState.P1_score)})), 1000))
+                    this.setState({player1_status: win}, () =>  setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:this.incrementScore(prevState.P1_score)})), touchQuestionDelay))
                 }
                 else
                 {
-                    this.setState({player1_status: loss}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:this.decrementScore(prevState.P1_score)})), 1000))
+                    this.setState({player1_status: loss}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:this.decrementScore(prevState.P1_score)})), touchQuestionDelay))
                 }
                 Vibration.vibrate(50)
         }
@@ -273,13 +283,14 @@ export default class MultiplayerGameScreen extends Component {
     myPress2 = () => {
         if(this.state.player1_status === defaultColor && this.state.player2_status === defaultColor && !this.state.gameEnded && this._ismounted)
         {
+            this.getTimeLeft()
             if(this.state.currentA)
             {
-                this.setState({player2_status: win}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.incrementScore(prevState.P2_score)})), 1000))
+                this.setState({player2_status: win}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.incrementScore(prevState.P2_score)})), touchQuestionDelay))
             }
             else
             {
-                this.setState({player2_status: loss}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.decrementScore(prevState.P2_score)})), 1000))
+                this.setState({player2_status: loss}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.decrementScore(prevState.P2_score)})), touchQuestionDelay))
             }
             Vibration.vibrate(50)
         }
