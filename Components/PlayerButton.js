@@ -4,10 +4,10 @@ import { AuthSession } from 'expo';
 
 
 const PlayerButton = (props) => (
-    // <View
-    // style={{flex:1.5}}
-    // onTouchStart={props.myPress}
-    // >
+    <View
+    style={{flex:1.5}}
+    onTouchStart={props.myPress}
+    >
         <TouchableHighlight 
             onPressIn={props.myPress}
             underlayColor={props.feedbackColor}
@@ -15,7 +15,7 @@ const PlayerButton = (props) => (
         >
             <Text style={mystyles.playerId}>{props.playerId}</Text>
         </TouchableHighlight>
-    // </View>
+    </View>
 )
 
 export default PlayerButton

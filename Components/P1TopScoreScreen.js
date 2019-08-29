@@ -32,7 +32,7 @@ export default class P1TopScoreScreen extends Component {
     thegame = this.props.navigation.getParam('game')
     uid = Firebase.auth().currentUser.uid
     user = this.props.navigation.getParam('user')
-    time = this.props.navigation.getParam('time')
+    time = this.props.navigation.getParam('time') || 60
     name = this.props.navigation.getParam('name')
 
     constructor(props) {

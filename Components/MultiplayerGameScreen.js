@@ -20,6 +20,25 @@ export const defaultColor = '#129793'
 let P1_hitTime = 0
 let P2_hitTime = 0
 
+
+let state = {
+    count: 3,
+    showCountDown: true,
+    player1_status: defaultColor,
+    player2_status: defaultColor,
+    gameArray: [],
+    currentGame: [],
+    question: '',
+    currentQ:'',
+    currentA: '',
+    P1_score: 0,
+    P2_score: 0,
+    gameDuration: 60*1000,
+    // gameDuration: 120000, //60 secs
+    gameEnded: false,
+    showGoBack: false
+}
+
 export default class MultiplayerGameScreen extends Component {
 
     static navigationOptions = {
@@ -28,23 +47,7 @@ export default class MultiplayerGameScreen extends Component {
 
     constructor(props) {
         super(props)
-        this.state = {
-            count: 3,
-            showCountDown: true,
-            player1_status: defaultColor,
-            player2_status: defaultColor,
-            gameArray: [],
-            currentGame: [],
-            question: '',
-            currentQ:'',
-            currentA: '',
-            P1_score: 0,
-            P2_score: 0,
-            gameDuration: (this.props.navigation.getParam('time') || 60) *1000,
-            // gameDuration: 120000, //60 secs
-            gameEnded: false,
-            showGoBack: false
-        }
+        this.state = {...state, gameDuration:(this.props.navigation.getParam('time') || 60) *1000}
     }
 
     componentWillMount(){
@@ -54,8 +57,17 @@ export default class MultiplayerGameScreen extends Component {
     mapGameSelectionToArray = () => {
         let arr = []
         let {navigation} = this.props
+
+        if(!(navigation.getParam('game_ColorMatch') || navigation.getParam('game_Capitals') || navigation.getParam('game_Homophones') || navigation.getParam('game_Math')))
+        {
+            arr.push(color)
+            arr.push(capital)
+            arr.push(homo)
+            arr.push(math)
+        }
+
         if(navigation.getParam('game_ColorMatch')){
-            // console.log("Here")
+            console.log("Here")
             arr.push(color)
         }
         if(navigation.getParam('game_Capitals')){
@@ -101,7 +113,7 @@ export default class MultiplayerGameScreen extends Component {
 
     gameEndResult = () => {
         this.setState({gameEnded:true})
-        this.goback = setTimeout(()=> this.setState({showGoBack:true}),5000)
+        this.goback = setTimeout(()=> this.setState({showGoBack:true}),3000)
         clearInterval(this.gameinterval)
         let result = ''
         let winner = ''
@@ -242,32 +254,10 @@ export default class MultiplayerGameScreen extends Component {
     }
 
 
-    // myPress1 = () => {
-    //     if(this.state.player2_status === defaultColor && this.state.player1_status === defaultColor)
-    //     {
-    //         this.setState({player1_status: win}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:this.incrementScore(prevState.P1_score)})), 1000))
-    //         Vibration.vibrate(100)
-    //     }
-        
-    // }
-
-    // myPress2 = () => {
-    //     if(this.state.player1_status === defaultColor && this.state.player2_status === defaultColor)
-    //     {
-    //         this.setState({player2_status: win}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.incrementScore(prevState.P2_score)})), 1000))
-    //         Vibration.vibrate(100)
-    //     }
-    
-    // }
-
     myPress1 = () => {
-        if(!this.state.gameEnded && this._ismounted)
+        if(this.state.player2_status === defaultColor && this.state.player1_status === defaultColor && !this.state.gameEnded && this._ismounted)
         {
-            P1_hitTime = this.getCurrentTime()
-            let copyP2_hitTime = P2_hitTime
-            if(P1_hitTime < copyP2_hitTime && copyP2_hitTime || P1_hitTime > copyP2_hitTime && !copyP2_hitTime)
-            {
-                if(this.state.currentA)
+            if(this.state.currentA)
                 {
                     this.setState({player1_status: win}, () =>  setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:this.incrementScore(prevState.P1_score)})), 1000))
                 }
@@ -276,37 +266,73 @@ export default class MultiplayerGameScreen extends Component {
                     this.setState({player1_status: loss}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:this.decrementScore(prevState.P1_score)})), 1000))
                 }
                 Vibration.vibrate(50)
-            }
-            // Alert.alert('1')
-            // else{
-            //     this.setState({player1_status: loss}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:prevState.P1_score + 10})), 1000))
-            // }
         }
-}
+        
+    }
 
     myPress2 = () => {
-        if(!this.state.gameEnded && this._ismounted)
+        if(this.state.player1_status === defaultColor && this.state.player2_status === defaultColor && !this.state.gameEnded && this._ismounted)
         {
-            P2_hitTime = this.getCurrentTime()
-            let copyP1_hitTime = P1_hitTime
-            if(P2_hitTime < copyP1_hitTime && copyP1_hitTime || P2_hitTime > copyP1_hitTime && !copyP1_hitTime)
+            if(this.state.currentA)
             {
-                if(this.state.currentA)
-                {
-                    this.setState({player2_status: win}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.incrementScore(prevState.P2_score)})), 1000))
-                }
-                else
-                {
-                    this.setState({player2_status: loss}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.decrementScore(prevState.P2_score)})), 1000))
-                }
-                Vibration.vibrate(50)
+                this.setState({player2_status: win}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.incrementScore(prevState.P2_score)})), 1000))
             }
-            // Alert.alert('2')
-            // else{
-            //     this.setState({player2_status: win}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:prevState.P2_score + 10})), 1000))
-            // }
+            else
+            {
+                this.setState({player2_status: loss}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.decrementScore(prevState.P2_score)})), 1000))
+            }
+            Vibration.vibrate(50)
         }
+    
     }
+
+    // myPress1 = () => {
+    //     if(!this.state.gameEnded && this._ismounted)
+    //     {
+    //         P1_hitTime = this.getCurrentTime()
+    //         let copyP2_hitTime = P2_hitTime
+    //         if(P1_hitTime < copyP2_hitTime && copyP2_hitTime || P1_hitTime > copyP2_hitTime && !copyP2_hitTime)
+    //         {
+    //             if(this.state.currentA)
+    //             {
+    //                 this.setState({player1_status: win}, () =>  setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:this.incrementScore(prevState.P1_score)})), 1000))
+    //             }
+    //             else
+    //             {
+    //                 this.setState({player1_status: loss}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:this.decrementScore(prevState.P1_score)})), 1000))
+    //             }
+    //             Vibration.vibrate(50)
+    //         }
+    //         // Alert.alert('1')
+    //         // else{
+    //         //     this.setState({player1_status: loss}, () => setTimeout(() => this.setState(prevState => ({player1_status:defaultColor, P1_score:prevState.P1_score + 10})), 1000))
+    //         // }
+    //     }
+    // }
+
+    // myPress2 = () => {
+    //     if(!this.state.gameEnded && this._ismounted)
+    //     {
+    //         P2_hitTime = this.getCurrentTime()
+    //         let copyP1_hitTime = P1_hitTime
+    //         if(P2_hitTime < copyP1_hitTime && copyP1_hitTime || P2_hitTime > copyP1_hitTime && !copyP1_hitTime)
+    //         {
+    //             if(this.state.currentA)
+    //             {
+    //                 this.setState({player2_status: win}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.incrementScore(prevState.P2_score)})), 1000))
+    //             }
+    //             else
+    //             {
+    //                 this.setState({player2_status: loss}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:this.decrementScore(prevState.P2_score)})), 1000))
+    //             }
+    //             Vibration.vibrate(50)
+    //         }
+    //         // Alert.alert('2')
+    //         // else{
+    //         //     this.setState({player2_status: win}, () => setTimeout(() => this.setState(prevState => ({player2_status:defaultColor, P2_score:prevState.P2_score + 10})), 1000))
+    //         // }
+    //     }
+    // }
 
 
     decrementCount=()=> {

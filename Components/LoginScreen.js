@@ -56,11 +56,11 @@ export default class LoginScreen extends Component {
 
 
     componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+        // BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
     
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+        // BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
 
     handleBackButtonClick = () => {
@@ -91,6 +91,8 @@ export default class LoginScreen extends Component {
 
         const { navigation } = this.props 
         const { email, password } = this.state
+
+        console.log('Pressed!')
 
         try {
             const user = await Login(email, password)
@@ -130,7 +132,7 @@ export default class LoginScreen extends Component {
    
     render() {
         return (
-            <KeyboardAwareScrollView enableOnAndroid extraScrollHeight={50}>
+            // <KeyboardAwareScrollView enableOnAndroid extraScrollHeight={50}>
                 <View style={[styles.container, {paddingTop: 10}]}>
 
                     <Prompt
@@ -212,7 +214,8 @@ export default class LoginScreen extends Component {
                     </View>
 
                 </View>
-            </KeyboardAwareScrollView>    
+            // </KeyboardAwareScrollView>   
+            
 
         ) 
     }
