@@ -9,21 +9,23 @@ const DisplayGlobal = props => {
     let color1='green'
     let color2='red'
     let constant = color2;
+    let once=true
     return props.names.map((name, index) => {
         let score = props.scores[index]
         
 
-        if(score == props.myscore) {
+        if(score == props.myscore && once) {
             constant=color1;
+            once=false
         }
 
         else {
             constant=color2;
         }
         return (
-            <View key={index}><Text style={{fontSize: 25, color: constant}}>{index +1}.
-                    {`\t\t\t\t\t${name}\t\t\t\t\t\t`} 
-                    <Text>{score}</Text>
+            <View key={index} style={{justifyContent: 'flex-start'}}><Text style={{fontSize: 25, color: constant, flexDirection: 'row'}}>{index +1}.
+                  {'\t\t\t'}  <Text>{name}</Text>
+                  {'\t\t\t'} <Text>{score}</Text>
             </Text></View>
         )
     })
@@ -95,6 +97,8 @@ export default  class P1GlobalScoreScreen extends Component {
                 <DisplayGlobal names={this.state.names}
                                 scores={this.state.scores}
                                 myscore={this.props.navigation.getParam('points')}
+                                user={this.user}
+                                uid={this.uid}
                 />
                 
             </View>
