@@ -2,8 +2,8 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerNgrokUrl": "https://7r-wra.usman65.edukid.exp.direct",
+  "packagerNgrokUrl": "https://packager.7r-wra.usman65.edukid.exp.direct",
+  "ngrokPid": 13777,
   "devToolsPort": 19002
 }

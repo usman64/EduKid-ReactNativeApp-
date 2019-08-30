@@ -224,7 +224,7 @@ export default class MultiplayerGameScreen extends Component {
             this.gameSelection()
             this.resetTimes()
         }
-        ,3000)
+        ,2500)
 
         this.gameTime = setTimeout(() => this.gameEndResult(), this.state.gameDuration)
 
@@ -258,7 +258,7 @@ export default class MultiplayerGameScreen extends Component {
     }
 
     getTimeLeft = () => {
-        touchQuestionDelay = (this.getCurrentTime() - gameSelectionStartIntervaltime - 3000)*-1
+        touchQuestionDelay = (this.getCurrentTime() - gameSelectionStartIntervaltime - 2400)*-1
         console.log(touchQuestionDelay)
     }
 
