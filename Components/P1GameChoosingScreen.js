@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, Button , Text, View, TextInput, TouchableOpacity, Image} from 'react-native';
 import styles from './styles'
+import {changeCurrScreen} from './backhandler'
 
 export class P1GameChoosingScreen extends Component {
 
@@ -9,6 +10,15 @@ export class P1GameChoosingScreen extends Component {
         let name = this.props.navigation.getParam('name')
         let time = this.props.navigation.getParam('time')
         this.props.navigation.navigate('Player1Game', {game: game, user: user, name: name, time:time})
+    }
+    
+    componentDidMount(){
+        changeCurrScreen('P1')
+    }
+
+    componentWillUnmount()
+    {
+        changeCurrScreen('Home')
     }
 
     render() {

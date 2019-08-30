@@ -6,7 +6,7 @@ import { Icon } from 'react-native-elements'
 import MultipleChoice from 'rn-multiple-choice'
 // import SelectMultiple from 'react-native-select-multiple'
 import Dialog, {ScaleAnimation ,DialogContent,DialogButton,DialogFooter } from 'react-native-popup-dialog';
-
+import {mybackhandler,changeCurrScreen, currScreen} from './backhandler'
 
 
 const GameDuration = props => (
@@ -72,11 +72,30 @@ export class SettingsScreen extends Component {
     }
 
     componentDidMount(){
-        BackHandler.addEventListener('hardwareBackPress',() => this.setState({showGameSelection:false}))
+        changeCurrScreen('Setting')
+        console.log("Settings mounted")
+        // if(mybackhandler.curr)
+        // {
+        //     this.prevbh = mybackhandler.curr
+        //     mybackhandler.curr.remove()
+        // }
+        // mybackhandler.curr = BackHandler.addEventListener('hardwareBackPress',() => this.setState({showGameSelection:false}))
+        // setmyBackHandler(BackHandler.addEventListener('hardwareBackPress',() => this.setState({showGameSelection:false})))
+        this.backhandler = BackHandler.addEventListener('hardwareBackPress',() => this.setState({showGameSelection:false}))
     }
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', () => this.setState({showGameSelection:false}));
+        console.log("Settings unmounted")
+        // this.backhandler.remove()
+        // setTimeout(() =>{
+        changeCurrScreen('Home')
+    // },1000)
+        // if(mybackhandler.curr)
+        // {  
+        //     mybackhandler.curr.remove()
+        //     mybackhandler.curr = this.prevbh
+        // }
+        // setmyBackHandler(this.prevBackhandler)
         state = this.state;
     }
 

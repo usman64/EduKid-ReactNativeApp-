@@ -86,12 +86,12 @@ export default class P1TopScoreScreen extends Component {
 
     componentDidMount() {
         this.userHighScores()
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+        this.backhandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
       
     }
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+        this.backhandler.remove()
     }
 
     render() {

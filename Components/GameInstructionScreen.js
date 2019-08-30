@@ -6,11 +6,11 @@ import styles from './styles'
 class GameInstructionScreen extends Component {
 
     componentDidMount(){
-        BackHandler.addEventListener('hardwareBackPress', ()=> this.props.navigation.navigate('Home'))
+       this.backhandler = BackHandler.addEventListener('hardwareBackPress', ()=> this.props.navigation.navigate('Home'))
     }
 
     componentWillUnmount(){
-        BackHandler.removeEventListener('hardwareBackPress',()=> this.props.navigation.navigate('Home'));
+       this.backhandler.remove()
     }
 
     name = this.props.navigation.getParam('name').split(" ")[0]

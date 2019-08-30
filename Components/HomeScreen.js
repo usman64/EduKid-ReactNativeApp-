@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {withNavigationFocus} from 'react-navigation'
 import { StyleSheet,UIManager, findNodeHandle, Button , Text, View, TextInput,BackHandler, TouchableOpacity,Alert, Image,Picker } from 'react-native';
 import styles from './styles'
 import Firebase from '../Server/firebase' 
@@ -6,6 +7,7 @@ import { Logout } from '../Server/firebaseFunc'
 import { YellowBox } from 'react-native'; 
 import { Icon } from 'react-native-elements'
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu'
+import {mybackhandler, setmyBackHandler,removemyBackHandler, changeCurrScreen,currScreen} from './backhandler'
 
 const PassChange = props => {
     if(props.success) {
@@ -34,8 +36,7 @@ const PassChange = props => {
 
 
 
-
-export default class HomeScreen extends Component {
+class HomeScreen extends Component {
     static navigationOptions = ({navigation}) => ({
         headerRight: (<TouchableOpacity
             onPress={() => navigation.navigate('Setting')}         
@@ -54,7 +55,8 @@ export default class HomeScreen extends Component {
     constructor(props) {
         super(props)
         this.state={
-            name:''
+            name:'',
+            myScreen: currScreen,
         }
 
         YellowBox.ignoreWarnings(['Setting a timer']);
@@ -86,11 +88,40 @@ export default class HomeScreen extends Component {
 
     componentWillMount() {
         this.readFromDb();
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+        // if(this.props.navigation.isFocused())
+        // {
+        //     this.backhandler=BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+        // }
+        console.log("Home mounted")
+        changeCurrScreen('Home')
+        // if(mybackhandler.curr)
+        // {
+           
+        // }
+        // this.backhandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+        // setmyBackHandler(BackHandler.addEventListener('hardwareBackPress', this.handleBackButton))
     }
 
     componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+        console.log("Home unmounted")
+        changeCurrScreen('Login')
+        // if(!this.props.navigation.isFocused())
+        // {
+        //     this.backhandler.remove()
+        // }
+        // if(mybackhandler.curr)
+        // {   
+            // mybackhandler.prev = mybackhandler.curr
+            // mybackhandler.curr = null
+
+            // mybackhandler.remove()
+            // removemyBackHandler(mybackhandler)
+        // }
+        if(this.backhandler)
+        {
+
+            this.backhandler.remove()
+        }
     }
 
    
@@ -112,6 +143,24 @@ export default class HomeScreen extends Component {
 
 
     render() {
+       if(currScreen === 'Home' && this.props.isFocused)
+       {
+           console.log("hi")
+           if(this.backhandler)
+           {
+               console.log("hi3")
+               this.backhandler.remove()
+           }
+            this.backhandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+       }
+       else
+       {
+           console.log("hi2")
+           if(this.backhandler)
+           {
+               this.backhandler.remove()
+           }
+       }
         let thename =  
             <Text style={styles.welcome}>
                 Hi <Text style={{color: 'green',alignSelf:'center'}}>{this.state.name}</Text>
@@ -167,6 +216,7 @@ export default class HomeScreen extends Component {
     }
 }
 
+export default withNavigationFocus(HomeScreen)
 
 const mystyles = new StyleSheet.create({
     thecontainer: {

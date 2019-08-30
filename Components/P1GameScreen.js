@@ -159,7 +159,7 @@ export default class P1GameScreen extends Component {
         this.interval=setInterval(()=> this.decrementCount(),1000)
         this.thetimer=setInterval(()=>this.decrementTime(), 1000)
 
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton)
+        this.backhandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackButton)
         // if(this._ismounted) {
         // }
     }
@@ -167,7 +167,8 @@ export default class P1GameScreen extends Component {
     componentWillUnmount() {
         clearInterval(this.interval)
         clearInterval(this.thetimer)
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+        this.backhandler.remove()
+        // BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
         // this._ismounted = false
     }
 
