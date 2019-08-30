@@ -7,8 +7,10 @@ import { HeaderBackButton } from 'react-navigation';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 
 const UserTopScores = props => {
+    let once=true;
     return props.scores.map((score,index) => {
-        if(score === props.points) {
+        if(score === props.points && once) {
+            once=false
             return (
                 <View key={index}><Text style={{fontSize: 30}}>{index +1}.{'\t\t\t\t\t'} 
                     <Text style={{color: 'green'}}>{score}</Text>
